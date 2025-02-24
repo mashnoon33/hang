@@ -1,11 +1,11 @@
 import { env } from "@/env";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import ical, { CalendarResponse, VEvent } from "node-ical";
 
 import { format } from "date-fns";
 
 export const scheduleRouter = createTRPCRouter({
-    getSchedule: protectedProcedure.query(async ({ ctx }) => {
+    getSchedule: publicProcedure.query(async () => {
         const data = await ical.async.fromURL(env.PRIVATE_ICAL_URL);
         return organizeEventsByDate(data);
     }),
