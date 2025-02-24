@@ -1,13 +1,11 @@
 import { format } from "date-fns";
 import { CalendarHeader } from "../CalendarHeader";
 import { useCalendar } from "../CalendarProvider";
+import { CurrentTimeIndicator } from "./current-time-indicator";
 import { DayColumn } from "./day-colmn";
 import { TimeColumn } from "./time-column";
-import { WeekHeader } from "./week-header";
 import { getWeekDays } from "./utils";
-import { useMemo } from "react";
-import { CurrentTimeIndicator } from "./current-time-indicator";
-import { CalendarResponse } from "node-ical";
+import { WeekHeader } from "./week-header";
 
 interface WeekViewProps {
   selectedDate: Date;
