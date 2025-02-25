@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { Resend } from "resend";
 
 type Theme = {
   brandColor?: string;
@@ -11,28 +12,24 @@ type SendVerificationRequestParams = {
   theme: Theme;
 };
 
+const resend = new Resend(env.AUTH_RESEND_KEY);
+
 export async function sendVerificationRequest(
   params: SendVerificationRequestParams,
 ) {
   const { identifier: to, url, theme } = params;
   const { host } = new URL(url);
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.AUTH_RESEND_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: env.AUTH_EMAIL_FROM,
-      to,
-      subject: `Sign in to ${host}`,
-      html: html({ url, host, theme }),
-      text: text({ url, host }),
-    }),
+
+  const { data, error } = await resend.emails.send({
+    from: env.AUTH_EMAIL_FROM,
+    to: [to],
+    subject: `Sign in to ${host}`,
+    html: html({ url, host, theme }),
+    text: text({ url, host }),
   });
 
-  if (!res.ok) {
-    throw new Error("Resend error: " + JSON.stringify(await res.json()));
+  if (error) {
+    throw new Error("Resend error: " + error.message);
   }
 }
 
