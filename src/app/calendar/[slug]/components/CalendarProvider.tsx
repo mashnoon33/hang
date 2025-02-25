@@ -1,13 +1,16 @@
 import { addMonths, addWeeks, endOfWeek, format, startOfWeek } from "date-fns";
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { api } from "@/trpc/react";
-import { CalendarEvent } from "../types";
+import { api, type RouterOutputs } from "@/trpc/react";
+import { useParams } from "next/navigation";
+
+
+type Calendar = RouterOutputs["schedule"]["getCalendar"];
 
 interface CalendarContextType {
   selectedDate: Date;
   currentView: "month" | "week";
   periodLabel: string;
-  events:   CalendarEvent;
+  calendar: Calendar | undefined;
   setSelectedDate: (date: Date) => void;
   setCurrentView: (view: "month" | "week") => void;
   handleDateSelect: (date: Date) => void;
@@ -22,9 +25,10 @@ const CalendarContext = createContext<CalendarContextType | undefined>(undefined
 export function CalendarProvider({ children }: { children: ReactNode }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<"month" | "week">("week");
+  const { slug } = useParams();
 
   // Fetch calendar data
-  const { data: events = {} } = api.schedule.getSchedule.useQuery();
+  const { data: calendar   } = api.schedule.getCalendar.useQuery({ identifier: slug as string });
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -61,7 +65,7 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
         selectedDate,
         currentView,
         periodLabel,
-        events,
+        calendar,
         setSelectedDate,
         setCurrentView,
         handleDateSelect,

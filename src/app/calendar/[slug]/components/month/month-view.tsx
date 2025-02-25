@@ -7,7 +7,7 @@ interface MonthViewProps {
 }
 
 export function MonthView({ selectedDate, onDateSelect }: MonthViewProps) {
-  const { events } = useCalendar();
+  const { calendar } = useCalendar();
 
   const monthStart = startOfMonth(selectedDate);
   const monthEnd = endOfMonth(monthStart);
@@ -42,7 +42,7 @@ export function MonthView({ selectedDate, onDateSelect }: MonthViewProps) {
       {/* Calendar grid */}
       {days.map((day) => {
         const dateKey = format(day, "yyyy-MM-dd");
-        const dayEvents = events[dateKey] ?? [];
+        const dayEvents = calendar?.events[dateKey] ?? [];
         
         return (
           <div

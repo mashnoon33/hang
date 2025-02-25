@@ -3,14 +3,16 @@
 import { MonthView } from "./components/month";
 import { WeekView } from "./components/week";
 import { useCalendar } from "./components/CalendarProvider";
+import { useParams } from "next/navigation";
 
-function CalendarContent() {
+export default function Calendar() {
   const {
     selectedDate,
     currentView,
     handleDateSelect,
     handleTimeSlotSelect,
   } = useCalendar();
+
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -30,7 +32,3 @@ function CalendarContent() {
     </div>
   );
 }
-
-export default function CalendarPage() {
-  return <CalendarContent />;
-} 
