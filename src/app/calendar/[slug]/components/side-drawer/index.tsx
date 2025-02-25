@@ -12,7 +12,7 @@ export function SideDrawer() {
   const { calendar } = useCalendar();
   return (
     <div className="p-2">
-        <div className="text-4xl font-bold">{calendar?.name}</div>
+        <div className="text-4xl mb-4 font-bold">{calendar?.name}</div>
       <MarkdownRenderer markdown={calendar?.description ?? ""} />
     </div>
   );

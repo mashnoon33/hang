@@ -50,6 +50,12 @@ export const rsvpRouter = createTRPCRouter({
             userId: ctx.session.user.id
         });
         return input
+    }),
+    cancelRsvp: protectedProcedure.input(z.object({
+        eventId: z.string(),
+    })).mutation(async ({ ctx, input }) => {
+        await ctx.db.delete(rsvps).where(eq(rsvps.eventId, input.eventId));
+        return input
     })
 });
 
