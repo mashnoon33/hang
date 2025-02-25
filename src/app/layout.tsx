@@ -1,15 +1,14 @@
+"use client"
 import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
 
+import { UpdateProfile } from "@/components/auth/profile";
+import { SignIn } from "@/components/auth/sign-in";
 import { TRPCReactProvider } from "@/trpc/react";
+import { HeroUIProvider } from "@heroui/react";
 import { SessionProvider } from "next-auth/react";
-export const metadata: Metadata = {
-  title: "Hangout",
-  description: "Hangout",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
-};
+
 
 export default function RootLayout({
   children,
@@ -18,9 +17,19 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} flex flex-col h-full`}>
       <body className="flex flex-col h-full ">
         <SessionProvider>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider><>
+            <HeroUIProvider>
+              <SignIn open={false} onOpenChange={() => {
+                console.log("open")
+              }} />
+              <UpdateProfile hideTrigger={true} />
+              {children}
+            </HeroUIProvider>
+          </></TRPCReactProvider>
         </SessionProvider>
       </body>
     </html>
   );
 }
+
+

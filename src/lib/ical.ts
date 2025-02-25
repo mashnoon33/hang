@@ -28,6 +28,8 @@ function isCalendarEvent(event: unknown): event is VEvent {
 export interface CalendarSlotMetadata {
   capacity: number,
   tags: string[]
+  type: 'a' | 'u'
+  description: string
 }
 
 // 
@@ -50,6 +52,12 @@ export function parseDescription(text: string): Partial<CalendarSlotMetadata> {
         case 'tags':
 
           event.tags = (v ?? '').split(',')
+          break;
+        case 'type':
+          event.type = (v?.trim().toLowerCase() === 'u' ? 'u' : 'a');
+          break;
+        case 'd':
+          event.description = v ?? '';
           break;
         default:
           break;

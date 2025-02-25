@@ -1,5 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { calendars, rsvps } from "@/server/db/schema";
+import { rsvps } from "@/server/db/schema";
 
 import { eq } from "drizzle-orm";
 import { z } from "zod";
@@ -32,12 +32,21 @@ export const rsvpRouter = createTRPCRouter({
     })).query(async ({ ctx, input }) => {
         const allRsvps = await ctx.db.query.rsvps.findMany({
             where: eq(rsvps.eventId, input.eventId),
-        }) 
+        });
+
         if (!allRsvps) {
             throw new Error("RSVP not found");
         }
 
-        return allRsvps;
+        const userIds = allRsvps.map(rsvp => rsvp.userId);
+        const users = await ctx.db.query.users.findMany({
+            where: (users, { inArray }) => inArray(users.id, userIds),
+        });
+
+        return allRsvps.map(rsvp => ({
+            ...rsvp,
+            user: users.find(user => user.id === rsvp.userId),
+        }));
     }),
     createRsvp: protectedProcedure.input(z.object({
         eventId: z.string(),
@@ -49,6 +58,12 @@ export const rsvpRouter = createTRPCRouter({
             units: input.units,
             userId: ctx.session.user.id
         });
+        return input
+    }),
+    cancelRsvp: protectedProcedure.input(z.object({
+        eventId: z.string(),
+    })).mutation(async ({ ctx, input }) => {
+        await ctx.db.delete(rsvps).where(eq(rsvps.eventId, input.eventId));
         return input
     })
 });

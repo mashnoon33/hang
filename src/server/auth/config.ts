@@ -1,6 +1,7 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import Resend from "next-auth/providers/resend"
+import Google from "next-auth/providers/google"
 
 import { db } from "@/server/db";
 import {
@@ -11,7 +12,7 @@ import {
 } from "@/server/db/schema";
 
 import { env } from "@/env";
-import { sendVerificationRequest } from "@/lib/resend";
+import { sendVerificationRequest } from "@/lib/resend/auth";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -57,6 +58,9 @@ export const authConfig = {
         });
       },
     }),
+    Google({
+      allowDangerousEmailAccountLinking: true
+    }),
     /**
      * ...add more providers here.
      *
@@ -67,6 +71,7 @@ export const authConfig = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+
   adapter: DrizzleAdapter(db, {
     usersTable: users,
     accountsTable: accounts,
