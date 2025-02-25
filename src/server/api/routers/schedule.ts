@@ -1,10 +1,10 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { calendars } from "@/server/db/schema";
-import ical, { CalendarResponse, VEvent } from "node-ical";
+import ical from "node-ical";
 
-import { format } from "date-fns";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { organizeEventsByDate } from "../../../lib/ical";
 
 export const scheduleRouter = createTRPCRouter({
     getCalendar: publicProcedure.input(z.object({
@@ -52,27 +52,3 @@ export const scheduleRouter = createTRPCRouter({
 });
 
 
-function organizeEventsByDate(events: CalendarResponse) {
-    return Object.values(events)
-      .filter(isCalendarEvent)
-      .reduce((acc: Record<string, VEvent[]>, event) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-        const dateKey = format(event.start, "yyyy-MM-dd");
-        if (!acc[dateKey]) {
-          acc[dateKey] = [];
-        }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-        acc[dateKey].push(event);
-        return acc;
-      }, {});
-  }
-  
-  
-
-  function isCalendarEvent(event: unknown): event is VEvent {
-    return typeof event === 'object' && 
-           event !== null && 
-           'type' in event && 
-           // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-           (event as any).type === 'VEVENT';
-  } 
