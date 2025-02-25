@@ -146,6 +146,20 @@ export const calendars = createTable(
   })
 );
 
+export const rsvps = createTable(
+  "rsvp",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    eventId: varchar("eventId", { length: 255 }).notNull(),
+    createdOn: timestamp('createdOn').notNull().defaultNow(),
+    updatedOn: timestamp('updatedOn').notNull().defaultNow(),
+    userId: varchar("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    units: integer("units").default(1)
+  }
+)
+
 export const calendarsRelations = relations(calendars, ({ one }) => ({
   user: one(users, { fields: [calendars.userId], references: [users.id] }),
 }));

@@ -22,3 +22,41 @@ function isCalendarEvent(event: unknown): event is VEvent {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
     (event as any).type === 'VEVENT';
 }
+
+
+
+export interface CalendarSlotMetadata {
+  capacity: number,
+  tags: string[]
+}
+
+// 
+
+
+// capacity:6 \n
+// tags:dinner, hang, 
+export function parseDescription(text: string): Partial<CalendarSlotMetadata> {
+  const event: Partial<CalendarSlotMetadata> = {}
+  try {
+    const lines = text.split("\n")
+    lines.forEach(line => {
+      // search for key: val
+      let [k, v] = line.split(":")
+      switch(k) {
+        case 'capacity':
+          v = v == undefined ? '' : v
+          event['capacity'] = parseInt(v)
+          break;
+        case 'tags':
+          v = v == undefined ? '' : v
+          event['tags'] = v.split(',')
+          break;
+        default: 
+          break;
+      }
+    })
+    return event
+  } catch {
+    return event
+  }
+}

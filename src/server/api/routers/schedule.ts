@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { organizeEventsByDate } from "../../../lib/ical";
 
+
 export const scheduleRouter = createTRPCRouter({
     getCalendar: publicProcedure.input(z.object({
         identifier: z.string(),
@@ -25,6 +26,7 @@ export const scheduleRouter = createTRPCRouter({
         const { icalUrl, ...calendarWithoutIcalUrl } = calendar;
         return { ...calendarWithoutIcalUrl, events: organizeEventsByDate(data) };
     }),
+
     checkShortUrl: publicProcedure.input(z.object({
         shortUrl: z.string(),
     })).query(async ({ ctx, input }) => {
