@@ -8,6 +8,27 @@
       "when": 1740072720304,
       "tag": "0000_clever_hedge_knight",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1740451642189,
+      "tag": "0001_lumpy_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1740451755113,
+      "tag": "0002_steep_leo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740451909489,
+      "tag": "0003_wise_harpoon",
+      "breakpoints": true
     }
   ]
 }

@@ -11,7 +11,9 @@ type SendVerificationRequestParams = {
   theme: Theme;
 };
 
-export async function sendVerificationRequest(params: SendVerificationRequestParams) {
+export async function sendVerificationRequest(
+  params: SendVerificationRequestParams,
+) {
   const { identifier: to, url, theme } = params;
   const { host } = new URL(url);
   const res = await fetch("https://api.resend.com/emails", {
@@ -29,7 +31,9 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
     }),
   });
 
-  if (!res.ok) throw new Error("Resend error: " + JSON.stringify(await res.json()));
+  if (!res.ok) {
+    throw new Error("Resend error: " + JSON.stringify(await res.json()));
+  }
 }
 
 function html(params: { url: string; host: string; theme: Theme }) {
@@ -73,6 +77,13 @@ function html(params: { url: string; host: string; theme: Theme }) {
         <td align="center"
           style="padding: 0px 0px 10px 0px; font-size: 16px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
           If you did not request this email you can safely ignore it.
+        </td>
+      </tr>
+      <tr>
+       <td align="center"
+          style="padding: 10px 0px; font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
+          Or copy and paste this URL into your browser: <br>
+          <a href="${url}" style="color: ${color.buttonText};">${url}</a>
         </td>
       </tr>
     </table>

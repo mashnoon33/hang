@@ -13,7 +13,7 @@ interface WeekViewProps {
 }
 
 export function WeekView({ selectedDate, onTimeSlotSelect }: WeekViewProps) {
-  const { events } = useCalendar();
+  const { calendar } = useCalendar();
   const days = getWeekDays(selectedDate);
 
   return (
@@ -28,7 +28,7 @@ export function WeekView({ selectedDate, onTimeSlotSelect }: WeekViewProps) {
           <DayColumn
             key={day.toISOString()}
             day={day}
-            events={events[format(day, "yyyy-MM-dd")] ?? []}
+            events={calendar?.events[format(day, "yyyy-MM-dd")] ?? []}
             onTimeSlotSelect={onTimeSlotSelect}
           />
         ))}

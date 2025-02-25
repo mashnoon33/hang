@@ -1,0 +1,1 @@
+ALTER TABLE "hang_calendar" ADD COLUMN "name" varchar(255) NOT NULL;

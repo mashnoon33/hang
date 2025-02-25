@@ -1,7 +1,7 @@
-import { HOURS } from "./utils";
-import { Event } from "./event-card";
-import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
 import { VEvent } from "node-ical";
+import ScrollIntoViewIfNeeded from 'react-scroll-into-view-if-needed';
+import { Event } from "./event-card";
+import { HOURS } from "./utils";
 
 interface TimeSlotProps {
   day: Date;

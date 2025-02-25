@@ -6,7 +6,7 @@ import {
   primaryKey,
   text,
   timestamp,
-  varchar,
+  varchar
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -127,3 +127,25 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 );
+
+
+export const calendars = createTable(
+  "calendar",
+  {
+    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+    name: varchar("name", { length: 255 }).notNull(),
+    description: text("description").notNull(),
+    icalUrl: varchar("ical_url", { length: 255 }).notNull(),
+    shortUrl: varchar("short_url", { length: 255 }).notNull(),
+    userId: varchar("user_id", { length: 255 })
+      .notNull()
+      .references(() => users.id),
+  },
+  (calendar) => ({
+    userIdIdx: index("calendar_user_id_idx").on(calendar.userId),
+  })
+);
+
+export const calendarsRelations = relations(calendars, ({ one }) => ({
+  user: one(users, { fields: [calendars.userId], references: [users.id] }),
+}));
