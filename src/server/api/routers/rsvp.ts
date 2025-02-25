@@ -9,7 +9,7 @@ import { z } from "zod";
 export const rsvpRouter = createTRPCRouter({
     getRsvp: protectedProcedure.query(async ({ ctx, input }) => {
         const rsvp = await ctx.db.query.rsvps.findFirst({
-            where: eq(rsvps.userId, ctx.session!.user.id),
+            where: eq(rsvps.userId, ctx.session.user.id),
         }) 
         if (!rsvp) {
             throw new Error("RSVP not found");
@@ -19,7 +19,7 @@ export const rsvpRouter = createTRPCRouter({
     }),
     getAllRsvps: protectedProcedure.query(async ({ ctx, input }) => {
         const allRsvps = await ctx.db.query.rsvps.findMany({
-            where: eq(rsvps.userId, ctx.session!.user.id),
+            where: eq(rsvps.userId, ctx.session.user.id),
         }) 
         if (!allRsvps) {
             throw new Error("RSVP not found");
@@ -47,7 +47,7 @@ export const rsvpRouter = createTRPCRouter({
         await ctx.db.insert(rsvps).values({
             eventId: input.eventId,
             units: input.units,
-            userId: ctx.session!.user.id
+            userId: ctx.session.user.id
         });
         return input
     })

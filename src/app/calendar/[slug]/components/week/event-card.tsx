@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
 import { format } from "date-fns";
@@ -21,7 +22,7 @@ function EventDialog({ event, onClose }: { event: VEvent, onClose: ()=> void }) 
   const description = parseDescription(event.description)
   const maxPlusOne = useMemo(()=> {
     return (description.capacity ?? 1) - (rsvpsForEvent?.length ?? 0)
-  } ,[rsvpsForEvent])
+  } ,[description.capacity, rsvpsForEvent?.length])
   // alloweable RSVP count 
 
   const handleRSVP = ()=>  {

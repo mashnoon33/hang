@@ -41,17 +41,17 @@ export function parseDescription(text: string): Partial<CalendarSlotMetadata> {
     const lines = text.split("\n")
     lines.forEach(line => {
       // search for key: val
-      let [k, v] = line.split(":")
-      switch(k) {
+      const [k, v] = line.split(":")
+      switch (k) {
         case 'capacity':
-          v = v == undefined ? '' : v
-          event['capacity'] = parseInt(v)
+
+          event.capacity = parseInt(v ?? '')
           break;
         case 'tags':
-          v = v == undefined ? '' : v
-          event['tags'] = v.split(',')
+
+          event.tags = (v ?? '').split(',')
           break;
-        default: 
+        default:
           break;
       }
     })
