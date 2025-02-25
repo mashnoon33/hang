@@ -13,26 +13,31 @@ interface WeekViewProps {
 }
 
 export function WeekView({ selectedDate, onTimeSlotSelect }: WeekViewProps) {
-  const { calendar } = useCalendar();
-  const days = getWeekDays(selectedDate);
+  const { calendar, currentView } = useCalendar();
+  const days = getWeekDays(selectedDate, currentView === "3day" ? "3day" : "week");
 
   return (
     <div className="flex-grow flex flex-col  ">
-      <div className="sticky top-0 z-10 bg-white">
+      <div className="sticky top-0  z-10 bg-white  overflow-x-auto">
         <CalendarHeader />
+      </div>
+      <div className="sticky top-14 z-10 bg-white border-b border-gray-200  overflow-x-auto">
         <WeekHeader days={days} />
       </div>
-      <div className="flex-grow grid grid-cols-8 gap-px bg-gray-200 relative">
+      <div className="flex-grow flex flex-row">
         <TimeColumn />
-        {days.map((day) => (
-          <DayColumn
-            key={day.toISOString()}
-            day={day}
-            events={calendar?.events[format(day, "yyyy-MM-dd")] ?? []}
-            onTimeSlotSelect={onTimeSlotSelect}
-          />
-        ))}
-        <CurrentTimeIndicator />
+
+        <div className={`flex-grow grid ${currentView === "3day" ? "grid-cols-3" : "grid-cols-7"} gap-px bg-gray-200 relative`}>
+          {days.map((day) => (
+            <DayColumn
+              key={day.toISOString()}
+              day={day}
+              events={calendar?.events[format(day, "yyyy-MM-dd")] ?? []}
+              onTimeSlotSelect={onTimeSlotSelect}
+            />
+          ))}
+          <CurrentTimeIndicator />
+        </div>
       </div>
     </div>
   );

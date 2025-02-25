@@ -2,38 +2,40 @@
 
 import { useCalendar } from "./CalendarProvider";
 import { ViewSwitcher } from "./ViewSwitcher";
-
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useViewportWidth } from "@/lib/hooks/use-viewport-width";
 export function CalendarHeader() {
     const { periodLabel, handleToday, handlePrevious, handleNext, currentView, setCurrentView } = useCalendar();
 
     return (
-        <div className="flex items-center justify-between m-6">
-            <div className="flex items-center gap-4" id="calendar-header">
-                <button
-                    onClick={handleToday}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                    Today
-                </button>
+        <div className="flex items-center h-14 justify-between p-4 sm:pt-2 border-b border-gray-200" id="calendar-header">
+            <div className="flex items-center gap-2 sm:gap-1  w-full">
                 <div className="flex items-center gap-2">
+                <SidebarTrigger />
+
+                    <div className=" items-center gap-1 hidden md:flex">
+                        <button
+                            onClick={handlePrevious}
+                            className="p-3 text-gray-600 hover:bg-gray-100 rounded-full"
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        <button
+                            onClick={handleNext}
+                            className="p-3 text-gray-600 hover:bg-gray-100 rounded-full"
+                        >
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
+
+                    </div>
                     <button
-                        onClick={handlePrevious}
-                        className="p-2 text-gray-600 hover:bg-gray-100 rounded-full"
+                        onClick={handleToday}
+                        className="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                     >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
+                        Today
                     </button>
-                    <button
-                        onClick={handleNext}
-                        className="p-2 text-gray-600 hover:bg-gray-100 rounded-full"
-                    >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                    <span className="text-xl font-semibold text-gray-900 min-w-[200px]">
+                    <span className="text-sm font-semibold text-gray-900 min-w-[150px] sm:min-w-[100px]">
                         {periodLabel}
                     </span>
                 </div>
