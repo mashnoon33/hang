@@ -23,7 +23,7 @@ interface CalendarContextType {
 
 const CalendarContext = createContext<CalendarContextType | undefined>(undefined);
 
-export function CalendarProvider({ children, demoCalendar }: { children: ReactNode, demoCalendar?: Calendar }) {
+export function CalendarProvider({ children }: { children: ReactNode }) {
   const { status } = useSession();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<"month" | "week">("week");
@@ -68,7 +68,7 @@ export function CalendarProvider({ children, demoCalendar }: { children: ReactNo
         selectedDate,
         currentView,
         periodLabel,
-        calendar: demoCalendar ?? calendar,
+        calendar,
         rsvps,
         setSelectedDate,
         setCurrentView,

@@ -2,16 +2,13 @@
 
 import { CalendarProvider } from "./components/CalendarProvider";
 import { SideDrawer } from "./components/side-drawer";
-import { RouterOutputs } from "@/trpc/react";
 export default function CalendarLayout({
   children,
-  demoCalendar
 }: {
   children: React.ReactNode;
-  demoCalendar?: RouterOutputs["schedule"]["getCalendar"];
 }) {
   return (
-    <CalendarProvider demoCalendar={demoCalendar}>
+    <CalendarProvider>
       <div className="flex h-full ">
         {/* Side Drawer */}
         <div className="w-80  border-r border-gray-200 overflow-hidden">
