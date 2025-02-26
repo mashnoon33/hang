@@ -55,7 +55,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
       <tr>
         <td align="center"
           style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
-          Sign in to <strong>${escapedHost}</strong>
+          Sign in to <strong>Hang</strong>
         </td>
       </tr>
       <tr>
@@ -64,7 +64,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
             <tr>
               <td align="center" style="border-radius: 5px;" bgcolor="${color.buttonBackground}"><a href="${url}"
                   target="_blank"
-                  style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${color.buttonText}; text-decoration: none; border-radius: 5px; padding: 10px 20px; border: 1px solid ${color.buttonBorder}; display: inline-block; font-weight: bold;">Sign
+                  style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; padding: 10px 20px; border: 1px solid ${color.buttonBorder}; display: inline-block; font-weight: bold;">Sign
                   in</a></td>
             </tr>
           </table>
@@ -78,7 +78,7 @@ function html(params: { url: string; host: string; theme: Theme }) {
       </tr>
       <tr>
        <td align="center"
-          style="padding: 10px 0px; font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
+          style="padding: 10px 0px; font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: ${color.text}; max-width: 300px; word-wrap: break-word;">
           Or copy and paste this URL into your browser: <br>
           <a href="${url}" style="color: ${color.buttonText};">${url}</a>
         </td>

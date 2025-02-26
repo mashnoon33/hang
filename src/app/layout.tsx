@@ -5,6 +5,8 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { SessionProvider } from "next-auth/react";
+import { SignIn } from "@/components/auth/sign-in";
+import { UpdateProfile } from "@/components/auth/profile";
 export const metadata: Metadata = {
   title: "Hangout",
   description: "Hangout",
@@ -18,7 +20,11 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} flex flex-col h-full`}>
       <body className="flex flex-col h-full ">
         <SessionProvider>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider><>
+            <SignIn hideTrigger={true} />
+            <UpdateProfile hideTrigger={true} />
+            {children}
+          </></TRPCReactProvider>
         </SessionProvider>
       </body>
     </html>

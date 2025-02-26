@@ -1,18 +1,16 @@
 "use client";
 
-import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import CreateCalendarModal from "@/components/modals/create-calendar"
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { SignIn } from "@/components/auth/sign-in";
-import Link from "next/link";
 
 
 export default function Home() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { status } = useSession();
 
   const handleSave = (shortUrl: string) => {
     router.push(`/calendar/${shortUrl}`);
@@ -29,16 +27,17 @@ export default function Home() {
           <span className="italic"> It is very much a work in progress. Most functionality is not yet implemented.</span>
         </p>
         <div className="flex justify-center gap-4">
-          <Link href="/calendar">
+          {/* <Link href="/calendar">
             <Button className="bg-black hover:bg-slate-800">
               Open Demo
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Button></Link>
-          {session ? <CreateCalendarModal onSave={handleSave} /> : <SignIn />}
+            </Button></Link> */}
+          {status === "authenticated" && <CreateCalendarModal onSave={handleSave} />}
+          {status === "authenticated" && <Button onClick={() => signOut()}>Sign Out</Button>}
+          {status === "unauthenticated" && <SignIn />}
 
         </div>
       </div>
-
     </main>
   )
 }

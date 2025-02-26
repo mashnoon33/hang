@@ -2,7 +2,7 @@ import { addMonths, addWeeks, endOfWeek, format, startOfWeek } from "date-fns";
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { api, type RouterOutputs } from "@/trpc/react";
 import { useParams } from "next/navigation";
-
+import { useSession } from "next-auth/react";
 
 type Calendar = RouterOutputs["schedule"]["getCalendar"];
 
@@ -11,6 +11,7 @@ interface CalendarContextType {
   currentView: "month" | "week";
   periodLabel: string;
   calendar: Calendar | undefined;
+  rsvps: RouterOutputs["rsvp"]["getAllRsvps"] | undefined;
   setSelectedDate: (date: Date) => void;
   setCurrentView: (view: "month" | "week") => void;
   handleDateSelect: (date: Date) => void;
@@ -22,13 +23,15 @@ interface CalendarContextType {
 
 const CalendarContext = createContext<CalendarContextType | undefined>(undefined);
 
-export function CalendarProvider({ children }: { children: ReactNode }) {
+export function CalendarProvider({ children, demoCalendar }: { children: ReactNode, demoCalendar?: Calendar }) {
+  const { status } = useSession();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<"month" | "week">("week");
   const { slug } = useParams();
 
   // Fetch calendar data
-  const { data: calendar   } = api.schedule.getCalendar.useQuery({ identifier: slug as string });
+  const { data: calendar } = api.schedule.getCalendar.useQuery({ identifier: slug as string }, { enabled: status === "authenticated" });
+  const { data: rsvps } = api.rsvp.getAllRsvps.useQuery(undefined, { enabled: status === "authenticated" });
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -40,13 +43,13 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
   };
 
   const handlePrevious = () => {
-    setSelectedDate((current) => 
+    setSelectedDate((current) =>
       currentView === "month" ? addMonths(current, -1) : addWeeks(current, -1)
     );
   };
 
   const handleNext = () => {
-    setSelectedDate((current) => 
+    setSelectedDate((current) =>
       currentView === "month" ? addMonths(current, 1) : addWeeks(current, 1)
     );
   };
@@ -65,7 +68,8 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
         selectedDate,
         currentView,
         periodLabel,
-        calendar,
+        calendar: demoCalendar ?? calendar,
+        rsvps,
         setSelectedDate,
         setCurrentView,
         handleDateSelect,
