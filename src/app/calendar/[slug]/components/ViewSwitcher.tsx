@@ -1,6 +1,6 @@
 interface ViewSwitcherProps {
-  currentView: "month" | "week";
-  onViewChange: (view: "month" | "week") => void;
+  currentView: "month" | "week" | "3day";
+  onViewChange: (view: "month" | "week" | "3day") => void;
 }
 
 export function ViewSwitcher({ currentView, onViewChange }: ViewSwitcherProps) {
@@ -15,6 +15,16 @@ export function ViewSwitcher({ currentView, onViewChange }: ViewSwitcherProps) {
           }`}
       >
         Month
+      </button>
+      <button
+        onClick={() => onViewChange("3day")}
+        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors
+          ${currentView === "3day"
+            ? "bg-gray-100 text-gray-900"
+            : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+          }`}
+      >
+        3 Days
       </button>
       <button
         onClick={() => onViewChange("week")}

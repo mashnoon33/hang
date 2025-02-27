@@ -12,7 +12,6 @@ export const userRouter = createTRPCRouter({
         await ctx.db.update(users).set({
             name: input.name,
             bio: input.bio,
-            dateOfBirth: input.dateOfBirth,
         }).where(eq(users.id, ctx.session.user.id));
         return input;
     })

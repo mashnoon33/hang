@@ -1,4 +1,4 @@
-import { addMonths, addWeeks, endOfWeek, format, startOfWeek } from "date-fns";
+import { addDays, addMonths, addWeeks, endOfWeek, format, startOfWeek } from "date-fns";
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { api, type RouterOutputs } from "@/trpc/react";
 import { useParams } from "next/navigation";
@@ -8,12 +8,12 @@ type Calendar = RouterOutputs["schedule"]["getCalendar"];
 
 interface CalendarContextType {
   selectedDate: Date;
-  currentView: "month" | "week";
+  currentView: "month" | "week" | "3day";
   periodLabel: string;
   calendar: Calendar | undefined;
   rsvps: RouterOutputs["rsvp"]["getAllRsvps"] | undefined;
   setSelectedDate: (date: Date) => void;
-  setCurrentView: (view: "month" | "week") => void;
+  setCurrentView: (view: "month" | "week" | "3day") => void;
   handleDateSelect: (date: Date) => void;
   handleTimeSlotSelect: (date: Date) => void;
   handlePrevious: () => void;
@@ -26,7 +26,7 @@ const CalendarContext = createContext<CalendarContextType | undefined>(undefined
 export function CalendarProvider({ children }: { children: ReactNode }) {
   const { status } = useSession();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [currentView, setCurrentView] = useState<"month" | "week">("week");
+  const [currentView, setCurrentView] = useState<"month" | "week" | "3day">("week");
   const { slug } = useParams();
 
   // Fetch calendar data
@@ -41,17 +41,34 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
     setSelectedDate(date);
     // Here you would typically open an event creation modal
   };
-
   const handlePrevious = () => {
-    setSelectedDate((current) =>
-      currentView === "month" ? addMonths(current, -1) : addWeeks(current, -1)
-    );
+    setSelectedDate((current) => {
+      switch (currentView) {
+        case "month":
+          return addMonths(current, -1);
+        case "week":
+          return addWeeks(current, -1);
+        case "3day":
+          return addDays(current, -3); // Adjust this if you want a different behavior for 3day view
+        default:
+          return current;
+      }
+    });
   };
 
   const handleNext = () => {
-    setSelectedDate((current) =>
-      currentView === "month" ? addMonths(current, 1) : addWeeks(current, 1)
-    );
+    setSelectedDate((current) => {
+      switch (currentView) {
+        case "month":
+          return addMonths(current, 1);
+        case "week":
+          return addWeeks(current, 1);
+        case "3day":
+          return addDays(current, 3); // Adjust this if you want a different behavior for 3day view
+        default:
+          return current;
+      }
+    });
   };
 
   const handleToday = () => {

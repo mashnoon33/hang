@@ -37,7 +37,7 @@ export function SignIn({ hideTrigger = false }: { hideTrigger?: boolean }) {
         <DialogTrigger asChild>
           <Button onClick={() => setIsOpen(true)}>Sign In</Button>
         </DialogTrigger></>}
-      <DialogContent className="max-w-[400px]">
+      <DialogContent className="max-w-[400px]" >
         <DialogTitle>Welcome back!</DialogTitle>
         <DialogDescription className="mt-[-10px]">
           You have been invited to RSVP for {calendarName}. Please sign in to continue.
@@ -52,12 +52,14 @@ export function SignIn({ hideTrigger = false }: { hideTrigger?: boolean }) {
               placeholder="example@email.com"
               value={email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+              autoFocus={false}
             />
           </div>
           <DialogFooter className="mt-4">
             <Button type="submit" className="w-full">
               Sign in
-            </Button>          </DialogFooter>
+            </Button>          
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
