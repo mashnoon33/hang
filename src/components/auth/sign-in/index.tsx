@@ -1,15 +1,13 @@
 "use client"
-import { signIn, useSession } from "next-auth/react"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useParams } from "next/navigation";
-import { usePathname } from 'next/navigation'
 import { api } from "@/trpc/react";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
+import { signIn, useSession } from "next-auth/react";
+import { useParams, usePathname } from "next/navigation";
+import React, { useMemo, useState } from 'react';
 
-export function SignIn({ hideTrigger = false }: { hideTrigger?: boolean }) {
-  const [isOpen, setIsOpen] = useState(false);
+export function SignIn({ open, onOpenChange }: { open: boolean, onOpenChange: (open: boolean) => void }) {
   const { status } = useSession();
   const { slug } = useParams();
   const pathname = usePathname();
@@ -25,43 +23,42 @@ export function SignIn({ hideTrigger = false }: { hideTrigger?: boolean }) {
     await signIn("resend", { email });
   };
 
-  useEffect(() => {
-    if (isCalendarPage && status === "unauthenticated") {
-      setIsOpen(true);
-    }
-  }, [isCalendarPage, status]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      {!hideTrigger && <>
-        <DialogTrigger asChild>
-          <Button onClick={() => setIsOpen(true)}>Sign In</Button>
-        </DialogTrigger></>}
-      <DialogContent className="max-w-[400px]" >
-        <DialogTitle>Welcome back!</DialogTitle>
-        <DialogDescription className="mt-[-10px]">
-          You have been invited to RSVP for {calendarName}. Please sign in to continue.
-        </DialogDescription>
-        <form onSubmit={handleSubmit} >
-          <div className="form-group mt-4 mb-8">
-            <label className="text-sm font-medium" htmlFor="email">Email</label>
-            <Input
-              type="text"
-              id="email"
-              name="email"
-              placeholder="example@email.com"
-              value={email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-              autoFocus={false}
-            />
-          </div>
-          <DialogFooter className="mt-4">
-            <Button type="submit" className="w-full">
-              Sign in
-            </Button>          
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <Modal isOpen={open || (isCalendarPage && status === "unauthenticated")} onOpenChange={onOpenChange}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              <h2>Welcome back!</h2>
+              <p className="text-sm text-gray-500">
+                {calendarName ? `You have been invited to RSVP for ${calendarName}. Please sign in to continue.` : "Please sign in to continue."}
+              </p>
+            </ModalHeader>
+            <ModalBody>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group mt-4 mb-8">
+                  <label className="text-sm font-medium" htmlFor="email">Email</label>
+                  <Input
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="example@email.com"
+                    value={email}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                    autoFocus={false}
+                  />
+                </div>
+                <ModalFooter>
+                  <Button type="submit" className="w-full">
+                    Sign in
+                  </Button>
+                </ModalFooter>
+              </form>
+            </ModalBody>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 }

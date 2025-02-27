@@ -20,7 +20,9 @@ export default function RootLayout({
         <SessionProvider>
           <TRPCReactProvider><>
             <HeroUIProvider>
-              <SignIn hideTrigger={true} />
+              <SignIn open={false} onOpenChange={() => {
+                console.log("open")
+              }} />
               <UpdateProfile hideTrigger={true} />
               {children}
             </HeroUIProvider>

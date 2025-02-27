@@ -15,7 +15,7 @@ export function CalendarModeToggle() {
         setIsExpanded(!isExpanded);
     };
 
-    const handleViewChange = (view: string) => {
+    const handleViewChange = (view: "month" | "week" | "3day") => {
         setCurrentView(view);
         setIsExpanded(false);
     };

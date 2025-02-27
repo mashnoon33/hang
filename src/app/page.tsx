@@ -6,14 +6,19 @@ import CreateCalendarModal from "@/components/modals/create-calendar"
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { SignIn } from "@/components/auth/sign-in";
-
+import { useState } from "react";
 
 export default function Home() {
   const router = useRouter();
   const { status } = useSession();
+  const [openSignInModal, setOpenSignInModal] = useState(false);
 
   const handleSave = (shortUrl: string) => {
     router.push(`/calendar/${shortUrl}`);
+  };
+
+  const handleSignIn = () => {
+    setOpenSignInModal(true);
   };
 
   return (
@@ -34,8 +39,8 @@ export default function Home() {
             </Button></Link> */}
           {status === "authenticated" && <CreateCalendarModal onSave={handleSave} />}
           {status === "authenticated" && <Button onClick={() => signOut()}>Sign Out</Button>}
-          {status === "unauthenticated" && <SignIn />}
-
+          {status === "unauthenticated" && <Button onClick={handleSignIn}>Sign In</Button>}
+          {status === "unauthenticated" && <SignIn open={openSignInModal} onOpenChange={setOpenSignInModal} />}
         </div>
       </div>
     </main>
