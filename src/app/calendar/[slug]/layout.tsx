@@ -2,7 +2,7 @@
 
 import { CalendarProvider } from "./components/CalendarProvider";
 import { SideDrawer } from "./components/side-drawer";
-import { FloatingActionButton } from "./components/fab";
+import { FloatingActionButtonBar } from "./components/fab";
 export default function CalendarLayout({
   children,
 }: {
@@ -13,7 +13,7 @@ export default function CalendarLayout({
       <div className="flex h-full w-full">
         {/* Side Drawer */}
         <div className="w-[20rem]  border-r border-gray-200 min-w-[350px] hidden lg:block">
-            <SideDrawer />
+          <SideDrawer />
         </div>
 
         {/* Main Content */}
@@ -23,7 +23,7 @@ export default function CalendarLayout({
             {children}
           </div>
         </div>
-        <FloatingActionButton />
+        <FloatingActionButtonBar />
       </div>
     </CalendarProvider>
   );

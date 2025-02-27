@@ -27,7 +27,7 @@ export function WeekHeader({ days }: WeekHeaderProps) {
   const { currentView } = useCalendar();
   return (
     <div className="flex-grow flex flex-row">
-      <div className=" w-14 flex-shrink-0 h-20" />
+      <div className=" w-14 flex-shrink-0 h-14" />
       <div className={`grid ${currentView === "3day" ? "grid-cols-3" : "grid-cols-7"} border-b border-gray-200 flex-grow`}>
         {days.map((day) => (
           <DayHeader key={day.toISOString()} day={day} />

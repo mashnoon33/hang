@@ -1,3 +1,9 @@
+import { Calendar, CalendarRange, CalendarDays } from "lucide-react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/ui/toggle-group";
+
 interface ViewSwitcherProps {
   currentView: "month" | "week" | "3day";
   onViewChange: (view: "month" | "week" | "3day") => void;
@@ -5,37 +11,16 @@ interface ViewSwitcherProps {
 
 export function ViewSwitcher({ currentView, onViewChange }: ViewSwitcherProps) {
   return (
-    <div className="flex space-x-2 bg-white rounded-lg shadow-sm border p-1">
-      <button
-        onClick={() => onViewChange("month")}
-        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors
-          ${currentView === "month"
-            ? "bg-gray-100 text-gray-900"
-            : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
-          }`}
-      >
-        Month
-      </button>
-      <button
-        onClick={() => onViewChange("3day")}
-        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors
-          ${currentView === "3day"
-            ? "bg-gray-100 text-gray-900"
-            : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
-          }`}
-      >
-        3 Days
-      </button>
-      <button
-        onClick={() => onViewChange("week")}
-        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors
-          ${currentView === "week"
-            ? "bg-gray-100 text-gray-900"
-            : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
-          }`}
-      >
-        Week
-      </button>
-    </div>
+    <ToggleGroup className="hidden md:flex" type="single" value={currentView} onValueChange={onViewChange}>
+      <ToggleGroupItem value="month" aria-label="Toggle month view">
+        <Calendar className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="3day" aria-label="Toggle 3-day view">
+        <CalendarRange className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="week" aria-label="Toggle week view">
+        <CalendarDays className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
   );
-} 
+}

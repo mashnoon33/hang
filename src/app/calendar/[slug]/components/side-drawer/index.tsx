@@ -11,7 +11,7 @@ export function MarkdownRenderer({ markdown }: { markdown: string }) {
 export function SideDrawer() {
   const { calendar } = useCalendar();
   return (
-    <div className=" overflow-y-auto h-screen">
+    <div className=" overflow-y-auto h-screen bg-gray-50">
       {!calendar ? (
         <div className="animate-pulse flex flex-col gap-4">
           <div className="h-12 bg-gray-300 rounded"></div>
