@@ -14,7 +14,7 @@ interface TimeSlotProps {
 function TimeSlot({ day, hour, onTimeSlotSelect, isToday, isWeekend }: TimeSlotProps) {
   return (
     <div
-      className={`h-12 border-b border-gray-100 ${isWeekend ? "bg-gray-50" : ""} ${isToday ? "bg-blue-50" : ""} `}
+      className={`h-12 border-b  ${isWeekend ? "bg-gray-50 border-gray-200" : ""} ${isToday ? "bg-blue-50 border-blue-100" : ""} `}
       onClick={() => {
         const date = new Date(day);
         date.setHours(hour);

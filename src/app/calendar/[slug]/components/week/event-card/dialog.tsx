@@ -3,12 +3,11 @@
 
 import { format } from "date-fns";
 import { VEvent } from "node-ical";
-import { useMemo, useState } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/react";
+import { useCallback, useMemo, useState } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, NumberInput } from "@heroui/react";
 import { CalendarSlotMetadata, parseDescription } from "@/lib/ical";
 import { api, RouterOutputs } from "@/trpc/react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSession } from "next-auth/react";
 import { Card, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -40,7 +39,16 @@ export function EventDialog({ isOpen, event, metadata, onClose }: { isOpen: bool
       onClose();
       cancelRsvp({ eventId: event.uid });
     };
-  
+    const handlePlusOneChange = useCallback((value: number) => {
+      if (value > maxPlusOne) {
+        setPlusOne(maxPlusOne);
+      } else if (value < 0) {
+        setPlusOne(0);
+      } else {
+        setPlusOne(value);
+      }
+    }, [maxPlusOne]);
+    
     return (
       <Modal isOpen={isOpen} onOpenChange={onClose} key={event.uid}>
         <ModalContent>
@@ -68,16 +76,17 @@ export function EventDialog({ isOpen, event, metadata, onClose }: { isOpen: bool
                   <Button variant="destructive" onClick={handleCancelRSVP}>Cancel RSVP</Button>
                 ) : (
                   <div className="flex w-full flex-row justify-between gap-2">
-                    <Select value={plusOne.toString()} onValueChange={(v) => setPlusOne(parseInt(v))}>
-                      <SelectTrigger className="w-[80px]">
-                        <SelectValue placeholder="Plus one" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[...Array(maxPlusOne + 1)].map((_, i) =>
-                          <SelectItem key={i} value={i.toString()}>+ {i}</SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
+                    <div className="flex w-[100px] flex-row gap-2">
+                    <NumberInput
+                      label="+"
+                      placeholder="Enter number"
+                      value={plusOne}
+                      onValueChange={handlePlusOneChange}
+                      labelPlacement="outside-left"
+                      size="sm"
+                      width="30px"
+                    />
+                    </div>
                     <Button className="ml-auto" onClick={handleRSVP}>RSVP</Button>
                   </div>
                 )}
