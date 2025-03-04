@@ -1,8 +1,9 @@
 import { addDays, addMonths, addWeeks, endOfWeek, format, startOfWeek } from "date-fns";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { api, type RouterOutputs } from "@/trpc/react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useViewportWidth } from "@/lib/hooks/use-viewport-width";
 
 type Calendar = RouterOutputs["schedule"]["getCalendar"];
 
@@ -25,8 +26,9 @@ const CalendarContext = createContext<CalendarContextType | undefined>(undefined
 
 export function CalendarProvider({ children }: { children: ReactNode }) {
   const { status } = useSession();
+  const { size } = useViewportWidth();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [currentView, setCurrentView] = useState<"month" | "week" | "3day">("week");
+  const [currentView, setCurrentView] = useState<"month" | "week" | "3day">(size === "sm" ? "3day" : "week");
   const { slug } = useParams();
 
   // Fetch calendar data
@@ -78,6 +80,15 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
   const periodLabel = currentView === "month"
     ? format(selectedDate, "MMMM yyyy")
     : `${format(startOfWeek(selectedDate), "MMM d")} - ${format(endOfWeek(selectedDate), "MMM d, yyyy")}`;
+    
+
+  useEffect(() => {
+    if (size === "sm") {
+      setCurrentView("3day");
+    } else {
+      // dont do anything for now
+    }
+  }, [size]);
 
   return (
     <CalendarContext.Provider
