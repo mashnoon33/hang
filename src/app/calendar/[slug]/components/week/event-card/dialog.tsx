@@ -52,15 +52,7 @@ export function EventDialog({ isOpen, event, metadata, onClose }: { isOpen: bool
               </p>
             </ModalHeader>
             <ModalBody>
-              <Card className="bg-slate-100 rounded-md">
-                <div className="p-4">
-                  <h2 className="text-xl font-bold">{event.summary}</h2>
-                  <p className="text-sm  text-gray-500">{format(new Date(event.start), "EEEE, MMMM d, yyyy")}</p>
-                  <p className="text-sm text-gray-500">{format(new Date(event.start), "h:mm a")} - {format(new Date(event.end), "h:mm a")}</p>
-                  <p className="text-sm text-gray-500">{metadata.capacity ? `${metadata.capacity} people max` : "No capacity limit"}</p>
-                </div>
-                {!!rsvpsForEvent?.length && RSVPList(rsvpsForEvent)}
-              </Card>
+              <EventCard event={event} metadata={metadata} rsvpsForEvent={rsvpsForEvent} />
             </ModalBody>
             <ModalFooter className="flex-row w-full">
               {isRsvped ? (
@@ -83,14 +75,28 @@ export function EventDialog({ isOpen, event, metadata, onClose }: { isOpen: bool
   );
 }
 
+export function EventCard({ event, metadata, rsvpsForEvent, selectable = false, onClick, oldEvent = false }: {     event: VEvent, metadata: Partial<CalendarSlotMetadata>, rsvpsForEvent: RouterOutputs["rsvp"]["getAllRsvpForAnEvent"] | undefined, selectable?: boolean, onClick?: () => void, oldEvent?: boolean }) {
+  const handleClick = () => {
+    if (selectable) {
+      onClick?.();
+    }
+  };
+  return (
+    <Card className={`bg-slate-100 rounded-md ${selectable ? "cursor-pointer hover:bg-slate-200" : ""} ${oldEvent ? "opacity-50" : ""}`} onClick={handleClick}>
+      <div className="p-4">
+        <h2 className="text-xl font-bold">{event.summary}</h2>
+        <p className="text-sm  text-gray-500">{format(new Date(event.start), "EEEE, MMMM d, yyyy")}</p>
+        <p className="text-sm text-gray-500">{format(new Date(event.start), "h:mm a")} - {format(new Date(event.end), "h:mm a")}</p>
+        <p className="text-sm text-gray-500">{metadata.capacity ? `${metadata.capacity} people max` : "No capacity limit"}</p>
+      </div>
+      {!!rsvpsForEvent?.length && RSVPList(rsvpsForEvent)}
+    </Card>
+  );
+}
 
 export function RSVPList(rsvpsForEvent: RouterOutputs["rsvp"]["getAllRsvpForAnEvent"]) {
   return <div className=" border-gray-200 p-4 border-t ">
-    {/* <span className="text-sm text-gray-500 font-bold">
-          RSVPS
-        </span> */}
     <TooltipProvider>
-
       <div className="flex flex-row gap-2">
         {rsvpsForEvent?.map(rsvp => (
           <Tooltip key={rsvp.userId}>
@@ -108,7 +114,6 @@ export function RSVPList(rsvpsForEvent: RouterOutputs["rsvp"]["getAllRsvpForAnEv
           </Tooltip>
         ))}
       </div>
-
     </TooltipProvider>
   </div>;
 }
