@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CircularFab } from "./const";
 interface FABNavigateProps {
     direction: "left" | "right";
     onClick: () => void;
@@ -9,8 +9,8 @@ interface FABNavigateProps {
 
 export function FABNavigate({ direction, onClick }: FABNavigateProps) {
     return (
-        <Button onClick={onClick} className="p-3 text-gray-200 rounded-full">
+        <CircularFab onClick={onClick}>
             {direction === "left" ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-        </Button>
+        </CircularFab>
     );
 }

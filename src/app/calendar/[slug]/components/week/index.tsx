@@ -21,7 +21,7 @@ export function WeekView({ selectedDate, onTimeSlotSelect }: WeekViewProps) {
       <div className="sticky top-0  z-10 bg-white  overflow-x-auto">
         <CalendarHeader />
       </div>
-      <div className="sticky top-14 z-10 bg-white  overflow-x-auto">
+      <div className="sticky top-14 z-10 bg-white border-b border-gray-200  overflow-x-auto">
         <WeekHeader days={days} />
       </div>
       <div className="flex-grow flex flex-row">

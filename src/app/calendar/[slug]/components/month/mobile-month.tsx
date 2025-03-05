@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { eachDayOfInterval, endOfMonth, endOfWeek, format, isAfter, isSameDay, isSameMonth, isPast, startOfMonth, startOfWeek } from "date-fns";
-import { useCalendar } from "../CalendarProvider";
-import { VEvent } from "node-ical";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { EventCard, EventDialog } from "../week/event-card/dialog";
 import { parseDescription } from "@/lib/ical";
+import { eachDayOfInterval, endOfMonth, endOfWeek, format, isAfter, isPast, isSameDay, isSameMonth, startOfMonth, startOfWeek } from "date-fns";
+import { VEvent } from "node-ical";
+import { useEffect, useRef, useState } from "react";
+import { useCalendar } from "../CalendarProvider";
+import {EventDialog } from "../week/event-card/dialog";
+import { EventCard } from "../week/event-card/dialog/event-card";
 
 export function MobileMonth() {
-    const { selectedDate, setSelectedDate, calendar } = useCalendar();
+    const { selectedDate, setSelectedDate, calendar, rsvps } = useCalendar();
     const [events, setEvents] = useState<VEvent[]>([]);
     const calRef = useRef<HTMLDivElement | null>(null);
     const eventsRef = useRef<HTMLDivElement | null>(null);

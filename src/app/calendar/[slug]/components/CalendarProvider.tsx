@@ -20,6 +20,9 @@ interface CalendarContextType {
   handlePrevious: () => void;
   handleNext: () => void;
   handleToday: () => void;
+  refetchRsvps: () => Promise<void>;
+  showEventDetail: boolean;
+  setShowEventDetail: (show: boolean) => void;
 }
 
 const CalendarContext = createContext<CalendarContextType | undefined>(undefined);
@@ -30,10 +33,10 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<"month" | "week" | "3day">(size === "sm" ? "3day" : "week");
   const { slug } = useParams();
-
+  const [showEventDetail, setShowEventDetail] = useState(true);
   // Fetch calendar data
   const { data: calendar } = api.schedule.getCalendar.useQuery({ identifier: slug as string }, { enabled: status === "authenticated" });
-  const { data: rsvps } = api.rsvp.getAllRsvps.useQuery(undefined, { enabled: status === "authenticated" });
+  const { data: rsvps, refetch: refetchRsvps } = api.rsvp.getAllRsvps.useQuery(undefined, { enabled: status === "authenticated" });
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -86,6 +89,7 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
     if (size === "sm") {
       setCurrentView("3day");
     } else {
+      setShowEventDetail(false);
       // dont do anything for now
     }
   }, [size]);
@@ -105,6 +109,10 @@ export function CalendarProvider({ children }: { children: ReactNode }) {
         handlePrevious,
         handleNext,
         handleToday,
+        // @ts-expect-error refetchRsvps is a promise
+        refetchRsvps,
+        showEventDetail,
+        setShowEventDetail,
       }}
     >
       {children}

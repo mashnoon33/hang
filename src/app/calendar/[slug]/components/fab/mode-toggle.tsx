@@ -4,6 +4,7 @@ import { useCalendar } from "../CalendarProvider";
 import { useEffect, useState } from "react";
 import { Calendar, List, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CircularFab } from "./const";
 
 export function CalendarModeToggle() {
     const { currentView, setCurrentView } = useCalendar();
@@ -22,14 +23,14 @@ export function CalendarModeToggle() {
 
 
     return (
-        <div className=" flex flex-col items-end space-y-2">
+        <div className=" flex flex-col items-end space-y-2 relative">
             {isExpanded && (
-                <>
+                <div className="absolute bottom-20 right-0 flex flex-col gap-2">
                     <Button
                         onClick={() => handleViewChange("month")}
                         className=" h-12 bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center"
                     >
-                        <Calendar className="w-6 h-6" />
+                        <Calendar className="w- h-6" />
                         <span className="text-sm">Month</span>
                     </Button>
                     <Button
@@ -46,14 +47,13 @@ export function CalendarModeToggle() {
                         <List className="w-6 h-6" />
                         <span className="text-sm">3 Day</span>
                     </Button>
-                </>
+                </div>
             )}
-            <Button
+            <CircularFab
                 onClick={toggleExpand}
-                className="p-3 text-gray-200 rounded-full"
             >
-                {isExpanded ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </Button>
+                {isExpanded ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+            </CircularFab>
         </div>
     );
 }

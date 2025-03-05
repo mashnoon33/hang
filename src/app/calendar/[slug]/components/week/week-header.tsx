@@ -28,7 +28,7 @@ export function WeekHeader({ days }: WeekHeaderProps) {
   return (
     <div className="flex-grow flex flex-row">
       <div className=" w-14 flex-shrink-0 h-14" />
-      <div className={`grid ${currentView === "3day" ? "grid-cols-3" : "grid-cols-7"} border-b border-gray-200 flex-grow`}>
+      <div className={`grid ${currentView === "3day" ? "grid-cols-3" : "grid-cols-7"} flex-grow`}>
         {days.map((day) => (
           <DayHeader key={day.toISOString()} day={day} />
         ))}

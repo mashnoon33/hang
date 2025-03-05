@@ -32,11 +32,6 @@ export default function Home() {
           <span className="italic"> It is very much a work in progress. Most functionality is not yet implemented.</span>
         </p>
         <div className="flex justify-center gap-4">
-          {/* <Link href="/calendar">
-            <Button className="bg-black hover:bg-slate-800">
-              Open Demo
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button></Link> */}
           {status === "authenticated" && <CreateCalendarModal onSave={handleSave} />}
           {status === "authenticated" && <Button onClick={() => signOut()}>Sign Out</Button>}
           {status === "unauthenticated" && <Button onClick={handleSignIn}>Sign In</Button>}

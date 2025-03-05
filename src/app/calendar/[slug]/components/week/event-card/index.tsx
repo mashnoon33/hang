@@ -41,7 +41,7 @@ export function Event({ event, disableDialog }: { event: VEvent, disableDialog?:
     } else {
       return 'bg-blue-100 hover:bg-blue-200';
     }
-  }, [metadata.type]);
+  }, [metadata.type, hasRsvp]);
   const cursorStyle = metadata.type === 'u' ? 'cursor-default' : 'cursor-pointer';
 
   return (
