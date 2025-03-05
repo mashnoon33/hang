@@ -24,7 +24,7 @@ export function EventDialog({ isOpen, event, metadata, onClose }: { isOpen: bool
 
   const { mutate: createRsvp } = api.rsvp.createRsvp.useMutation({
     onSuccess: async () => {
-     refetchRsvps();
+     await refetchRsvps();
       await refetchRsvpsForEvent();
       setSuccess('rsvped');
     },
@@ -37,7 +37,7 @@ export function EventDialog({ isOpen, event, metadata, onClose }: { isOpen: bool
   });
   const { mutate: cancelRsvp } = api.rsvp.cancelRsvp.useMutation({
     onSuccess: async () => {
-       refetchRsvps();
+      await refetchRsvps();
       await refetchRsvpsForEvent();
       setSuccess('canceled');
     },
