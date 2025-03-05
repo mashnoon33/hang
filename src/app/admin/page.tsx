@@ -7,7 +7,7 @@ export default function AdminPage() {
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 py-16 text-center">
+    <main className="flex min-h-dvh flex-col items-center justify-center bg-gray-100 px-4 py-16 text-center">
       <div className="max-w-3xl">
         <h1 className="mb-6 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
           Admin Dashboard

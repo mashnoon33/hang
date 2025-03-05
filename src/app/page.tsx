@@ -22,7 +22,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-red-100 to-white px-4 py-16 text-center">
+    <main className="flex min-h-dvh flex-col items-center justify-center bg-gradient-to-b from-red-100 to-white px-4 py-16 text-center">
       <div className="max-w-3xl">
         <h1 className="mb-6 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
           Welcome to Hang

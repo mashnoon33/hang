@@ -11,7 +11,7 @@ export function MarkdownRenderer({ markdown }: { markdown: string }) {
 }
 export function SideDrawer() {
   return (
-    <div className=" overflow-y-auto h-screen bg-gray-50">
+    <div className=" overflow-y-auto h-dvh bg-gray-50">
       <EventDetailIsolate />
     </div>
   );

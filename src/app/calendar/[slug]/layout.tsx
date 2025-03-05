@@ -10,9 +10,9 @@ export default function CalendarLayout({
 }) {
   return (
     <CalendarProvider>
-      <div className="flex h-screen w-full">
+      <div className="flex h-dvh w-full">
         {/* Side Drawer */}
-        <div className="w-[20rem]  border-r border-gray-200 min-w-[350px] h-screen  hidden lg:block">
+        <div className="w-[20rem]  border-r border-gray-200 min-w-[350px] h-dvh  hidden lg:block">
           <SideDrawer />
         </div>
 

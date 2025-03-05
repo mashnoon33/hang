@@ -81,7 +81,7 @@ export function MobileMonth() {
     };
 
     return (
-        <div className="mobile-month-view flex flex-col h-screen">
+        <div className="mobile-month-view flex flex-col h-dvh">
             <div className="calendar pb-4 mb-1 shadow-md" ref={calRef}>
                 {renderMonthCalendar(selectedDate, handleDayClick, events)}
             </div>
