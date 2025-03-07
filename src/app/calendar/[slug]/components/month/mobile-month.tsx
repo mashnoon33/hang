@@ -107,9 +107,10 @@ export function MobileMonth() {
 
 
 }
+const today = new Date();
+
 
 const RenderMonthCalendar = ({  handleDayClick, events }: {  handleDayClick: (date: Date) => void, events: VEvent[] }) => {
-    const today = new Date();
     const { periodLabel, selectedDate } = useCalendar();
 
     const currentWeekStart = startOfWeek(selectedDate);
@@ -125,7 +126,7 @@ const RenderMonthCalendar = ({  handleDayClick, events }: {  handleDayClick: (da
         <div className="flex flex-col gap-2 p-2">
             <div className="flex items-center ml-4">
                 <h2 className="font-semibold">
-                    {periodLabel}
+                    {periodLabel} {format(selectedDate, "ddd, MMM d")}
                 </h2>
             </div>
 
@@ -136,24 +137,37 @@ const RenderMonthCalendar = ({  handleDayClick, events }: {  handleDayClick: (da
                     </div>
                 ))}
                 {days.map((day, i) => {
-                    const dateString = format(day, "yyyy-MM-dd");
-                    const hasEvents = daysWithEvents.has(dateString);
-                    const todayAndFuture = isSameDay(day, today) || isAfter(day, today);
-                    const shouldHighlight = hasEvents && todayAndFuture;
-                    const highlightClass = shouldHighlight ? "bg-blue-200 font-bold text-blue-700" : "text-gray-500";
-
                     return (
-                        <button
-                            disabled={!hasEvents}
+                        <DayCell
                             key={i + dayOfWeekHeaders.length}
-                            onClick={() => handleDayClick(day)}
-                            className={`p-2 justify-self-center rounded-full w-10 h-10 ${highlightClass}`}
-                        >
-                            {format(day, "d")}
-                        </button>
+                            day={day}
+                            daysWithEvents={daysWithEvents}
+                            handleDayClick={handleDayClick}
+                        />
                     );
                 })}
             </div>
         </div>
     );
 }
+
+function DayCell({ day, daysWithEvents, handleDayClick }: { day: Date, daysWithEvents: Set<string>, handleDayClick: (date: Date) => void }) {
+    const { selectedDate } = useCalendar();
+    const dateString = format(day, "yyyy-MM-dd");
+    const hasEvents = daysWithEvents.has(dateString);
+    const todayAndFuture = isSameDay(day, today) || isAfter(day, today);
+    const shouldHighlight = hasEvents && todayAndFuture;
+    const isSelected = useMemo(() => isSameDay(day, selectedDate), [day, selectedDate]);
+
+    const highlightClass = shouldHighlight ? isSelected ? "bg-blue-700 font-bold text-white" : "bg-blue-200 font-bold text-blue-700" : "text-gray-500";
+    return (
+        <button
+            disabled={!hasEvents}
+            onClick={() => handleDayClick(day)}
+            className={`p-2 justify-self-center rounded-full w-10 h-10 ${highlightClass}`}
+        >
+            {format(day, "d")}
+        </button>
+    );
+}
+
