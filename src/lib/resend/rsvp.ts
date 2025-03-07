@@ -38,7 +38,7 @@ export async function sendRsvpEmail(
     const { data, error } = await resend.emails.send({
         from: env.AUTH_EMAIL_FROM,
         to: [email],
-        cc: [env.AUTH_EMAIL_FROM],
+        cc: ["mashnoon33@gmail.com"],
         subject: subject,
         react: react,
         text: textContent,
