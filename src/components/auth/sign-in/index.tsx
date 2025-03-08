@@ -17,7 +17,7 @@ export function SignIn({ open, onOpenChange }: { open: boolean, onOpenChange: (o
     return !!(pathname.includes("/calendar") && slug);
   }, [pathname, slug]);
 
-  const { data: calendarName } = api.schedule.getCalendarName.useQuery({ identifier: slug as string }, { enabled: isCalendarPage && status === "unauthenticated" });
+  const { data: calendarName } = api.schedule.getCalendarMetadata.useQuery({ identifier: slug as string }, { enabled: isCalendarPage && status === "unauthenticated" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ export function SignIn({ open, onOpenChange }: { open: boolean, onOpenChange: (o
             <ModalHeader className="flex flex-col gap-1">
               <h2>Welcome!</h2>
               <p className="text-sm font-normal text-gray-500">
-                {calendarName ? <>You have been invited to RSVP for <strong>{calendarName}</strong>. Please sign in to continue.</> : "Please sign in to continue."}
+                {calendarName?.name ? <>You have been invited to RSVP for <strong>{calendarName.name}</strong>. Please sign in to continue.</> : "Please sign in to continue."}
               </p>
             </ModalHeader>
             <ModalBody className='p-8'>

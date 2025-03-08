@@ -40,7 +40,9 @@ export function EventCard({ event, selectable = false, onClick, oldEvent = false
         : [];
     const capacityTag = metadata.capacity
       ? [<Badge key="capacity" className="bg-blue-500">{<User className="w-3 h-3 mr-1 " />} {`${rsvpsForEvent?.length ?? 0}/${metadata.capacity}`}</Badge>]
-      : [];
+      : rsvpsForEvent?.length > 0
+        ? [<Badge key="capacity" className="bg-blue-500">{<User className="w-3 h-3 mr-1 " />} {`${rsvpsForEvent?.length} going`}</Badge>]
+        : [];
     const todayTag = isSameDay(new Date(event.start), new Date())
       ? [<Badge key="today" className="bg-yellow-500"> <Clock className="w-3 h-3 mr-1 " /> Today</Badge>]
       : [];
@@ -63,9 +65,9 @@ export function EventCard({ event, selectable = false, onClick, oldEvent = false
         <div className={`text-sm text-gray-500 `}>
           <p className="flex flex-row gap-1 items-center"><ClockIcon className="w-4 h-4" /> {`${format(new Date(event.start), "hh:mm a")} - ${format(new Date(event.end), "hh:mm a")}`}</p>
         </div>
-        <div className={`text-sm text-gray-500 `}>
+        {!tags.length && <div className="text-sm text-gray-500 ">
           <p className="pr-2 items-center line-clamp-1">{metadata.description}</p>
-        </div>
+        </div>}
       </div>
       {/* {!!rsvpsForEvent?.length && RSVPList(rsvpsForEvent)} */}
     </Card>

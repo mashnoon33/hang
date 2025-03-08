@@ -43,6 +43,13 @@
       "when": 1740535976560,
       "tag": "0005_dark_valkyrie",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741476884306,
+      "tag": "0006_real_living_mummy",
+      "breakpoints": true
     }
   ]
 }
