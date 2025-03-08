@@ -117,6 +117,7 @@ export const calendars = createTable(
     id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
     name: varchar("name", { length: 255 }).notNull(),
     description: text("description").notNull(),
+    shortDescription: text("short_description"),
     icalUrl: varchar("ical_url", { length: 255 }).notNull(),
     shortUrl: varchar("short_url", { length: 255 }).notNull(),
     userId: varchar("user_id", { length: 255 })

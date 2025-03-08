@@ -21,7 +21,7 @@ export function CurrentTimeIndicator() {
     <>
       <span style={{ left: "-4rem", top: `calc(${currentTimePosition}% - 10px)` }} className="text-xs w-16 text-right absolute pr-2 ">
         <div className="bg-red-500 text-white rounded-lg p-1">
-          {format(new Date().setHours(currentHour), "h:mm a")}
+          {format(new Date().setHours(currentHour), "h:mm")}
         </div>
       </span>
       <div

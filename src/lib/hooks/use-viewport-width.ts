@@ -2,20 +2,20 @@
 import { useState, useEffect } from 'react';
 
 export const useViewportWidth = () => {
-  const [width, setWidth] = useState(window.innerWidth);
-  const [size, setSize] = useState(getSize(window.innerWidth));
+  const [width, setWidth] = useState(window?.innerWidth);
+  const [size, setSize] = useState(getSize(window?.innerWidth ?? 0));
 
   useEffect(() => {
     const handleResize = () => {
-      const newWidth = window.innerWidth;
+      const newWidth = window?.innerWidth;
       setWidth(newWidth);
-      setSize(getSize(newWidth));
+      setSize(getSize(newWidth ?? 0));
     };
 
-    window.addEventListener('resize', handleResize);
+    window?.addEventListener('resize', handleResize);
 
     // Clean up the event listener on component unmount
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window?.removeEventListener('resize', handleResize);
   }, []);
 
 

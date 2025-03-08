@@ -1,0 +1,1 @@
+ALTER TABLE "hang_calendar" ADD COLUMN "short_description" text;
