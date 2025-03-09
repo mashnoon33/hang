@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { X, Calendar } from "lucide-react";
+import { X, Calendar, Pencil } from "lucide-react";
 import { CircularFab } from "./const";
 
 interface FabCtaProps {
@@ -22,5 +22,13 @@ export function FabClose({ onClick }: FabCtaProps) {
         <CircularFab onClick={onClick}>
             <X className="w-16 h-16" />
         </CircularFab>
+    );
+}
+
+export function FabEditCalendar({ onClick }: FabCtaProps) {
+    return (
+        <Button onClick={onClick} className="p-8 text-xl text-gray-200 rounded-full bg-black">
+            <Pencil className="w-18 h-18" />
+        </Button>
     );
 }
