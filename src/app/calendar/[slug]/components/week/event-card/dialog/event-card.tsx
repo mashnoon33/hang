@@ -65,9 +65,9 @@ export function EventCard({ event, selectable = false, onClick, oldEvent = false
         <div className={`text-sm text-gray-500 `}>
           <p className="flex flex-row gap-1 items-center"><ClockIcon className="w-4 h-4" /> {`${format(new Date(event.start), "hh:mm a")} - ${format(new Date(event.end), "hh:mm a")}`}</p>
         </div>
-        <div className={`text-sm text-gray-500 `}>
+        {!tags.length && <div className="text-sm text-gray-500 ">
           <p className="pr-2 items-center line-clamp-1">{metadata.description}</p>
-        </div>
+        </div>}
       </div>
       {/* {!!rsvpsForEvent?.length && RSVPList(rsvpsForEvent)} */}
     </Card>
