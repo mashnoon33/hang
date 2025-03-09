@@ -12,18 +12,12 @@ export function MarkdownRenderer({ markdown }: { markdown: string }) {
   );
 }
 export function SideDrawer() {
-  const { size } = useViewportWidth();
   return (
     <Sidebar>
       <SidebarContent>
         <TopNav />
         <EventDetailIsolate />
       </SidebarContent>
-      {size === "sm" || size === "md" && <SidebarFooter >
-        <Button>
-          RSVP
-        </Button>
-      </SidebarFooter>}
     </Sidebar>
   );
 }

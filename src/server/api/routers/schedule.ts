@@ -82,6 +82,7 @@ export const scheduleRouter = createTRPCRouter({
     createCalendar: protectedProcedure.input(z.object({
         name: z.string().min(1),
         description: z.string(),
+        shortDescription: z.string().optional(),
         icalUrl: z.string(),
         shortUrl: z.string().optional(),
     })).mutation(async ({ ctx, input }) => {
@@ -90,9 +91,27 @@ export const scheduleRouter = createTRPCRouter({
             name: input.name,
             description: input.description,
             icalUrl: input.icalUrl,
+            shortDescription: input.shortDescription,
             shortUrl: input.shortUrl ?? crypto.randomUUID(),
             userId: ctx.session.user.id,
         });
         return shortUrl;
+    }),
+    updateCalendar: protectedProcedure.input(z.object({
+        id: z.number(),
+        name: z.string().min(1),
+        description: z.string(),
+        shortDescription: z.string().optional(),
+        shortUrl: z.string().optional(),
+    })).mutation(async ({ ctx, input }) => {
+        const { id, name, description, shortDescription, shortUrl } = input;
+        const { db } = ctx;
+        const updatedCalendar = await db.update(calendars).set({
+            name,
+            description,
+            shortDescription,
+            shortUrl,
+        }).where(eq(calendars.id, id)).returning();
+        return updatedCalendar[0];
     }),
 });

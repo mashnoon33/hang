@@ -4,23 +4,35 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@herou
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { api } from '@/trpc/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface CreateCalendarModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSave: (shortUrl: string) => void;
+    calendarData?: {
+        id: number;
+        name: string;
+        description: string;
+        shortUrl: string;
+    };
 }
 
-const CreateCalendarModal: React.FC<CreateCalendarModalProps> = ({ open, onOpenChange, onSave }) => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+const CreateCalendarModal: React.FC<CreateCalendarModalProps> = ({ open, onOpenChange, onSave, calendarData }) => {
+    const [name, setName] = useState(calendarData?.name ?? '');
+    const [description, setDescription] = useState(calendarData?.description ?? '');
+    const [shortUrl, setShortUrl] = useState(calendarData?.shortUrl ?? '');
     const [icalUrl, setIcalUrl] = useState('');
-    const [shortUrl, setShortUrl] = useState('');
-    const { mutate } = api.schedule.createCalendar.useMutation();
-    
+    const { mutate: createCalendar } = api.schedule.createCalendar.useMutation();
+    const { mutate: updateCalendar } = api.schedule.updateCalendar.useMutation();
+
+
     const handleSave = () => {
-        mutate({ name, description, icalUrl, shortUrl });
+        if (calendarData) {
+            updateCalendar({ id: calendarData.id, name, description, shortUrl });
+        } else {
+            createCalendar({ name, description, shortUrl, icalUrl });
+        }
         onSave(shortUrl);
         onOpenChange(false);
     };
@@ -31,9 +43,9 @@ const CreateCalendarModal: React.FC<CreateCalendarModalProps> = ({ open, onOpenC
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">
-                            <h2>Create Calendar</h2>
+                            <h2>{calendarData ? "Edit Calendar" : "Create Calendar"}</h2>
                             <p className="text-sm text-gray-500">
-                                Fill in the details below to create a new calendar.
+                                {calendarData ? "Edit the details below to update the calendar." : "Fill in the details below to create a new calendar."}
                             </p>
                         </ModalHeader>
                         <ModalBody>
@@ -74,7 +86,7 @@ const CreateCalendarModal: React.FC<CreateCalendarModalProps> = ({ open, onOpenC
                             </div>
                         </ModalBody>
                         <ModalFooter>
-                            <Button onClick={handleSave}>Save</Button>
+                            <Button onClick={handleSave}>{calendarData ? "Update" : "Save"}</Button>
                         </ModalFooter>
                     </>
                 )}
@@ -84,4 +96,3 @@ const CreateCalendarModal: React.FC<CreateCalendarModalProps> = ({ open, onOpenC
 };
 
 export default CreateCalendarModal;
-
