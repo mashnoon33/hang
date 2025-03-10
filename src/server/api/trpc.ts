@@ -14,6 +14,7 @@ import { ZodError } from "zod";
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import ical from "node-ical";
+import { env } from "@/env";
 const cache = new Map<string,  ical.CalendarResponse>();
 
 /**
@@ -134,3 +135,14 @@ export const protectedProcedure = t.procedure
       },
     });
   });
+
+export const cronProcedure = t.procedure.use(timingMiddleware).use(({ ctx, next }) => {
+  if (ctx.headers.get("authorization") !== `Bearer ${env.CRON_SECRET}`) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      ...ctx,
+    },
+  });
+});

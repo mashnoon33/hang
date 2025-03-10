@@ -21,6 +21,7 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     CRON_SECRET: z.string(),
+    NEXT_DOMAIN: z.string(),
   },
 
   /**
@@ -46,6 +47,7 @@ export const env = createEnv({
     PRIVATE_ICAL_URL: process.env.PRIVATE_ICAL_URL,
     NODE_ENV: process.env.NODE_ENV,
     CRON_SECRET: process.env.CRON_SECRET,
+    NEXT_DOMAIN: process.env.NEXT_DOMAIN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

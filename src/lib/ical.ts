@@ -15,6 +15,18 @@ export function organizeEventsByDate(events: CalendarResponse) {
       return acc;
     }, {});
 }
+
+export function organizeEventsById(events: CalendarResponse) {
+  return Object.values(events)
+    .filter(isCalendarEvent)
+    .reduce((acc: Record<string, VEvent>, event) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      acc[event.uid] = event;
+      return acc;
+    }, {});
+}
+
+
 function isCalendarEvent(event: unknown): event is VEvent {
   return typeof event === 'object' &&
     event !== null &&

@@ -1,45 +1,51 @@
-"use client";
+import type { Metadata, ResolvingMetadata } from 'next';
+import { CalendarClient } from './components/CalendarClient';
+import { api } from '@/trpc/server';
 
-import { MobileMonth, MonthView } from "./components/month";
-import { WeekView } from "./components/week";
-import { useCalendar } from "./components/CalendarProvider";
-import { useParams } from "next/navigation";
-import { useViewportWidth } from "@/lib/hooks/use-viewport-width";
-import { EventDetail } from "./components/event-detail";
-export default function Calendar() {
-  const {
-    selectedDate,
-    currentView,
-    handleDateSelect,
-    handleTimeSlotSelect,
-    showEventDetail,
-    setShowEventDetail,
-  } = useCalendar();
-  const { size } = useViewportWidth();
+type Props = {
+  params: Promise<{ slug: string }>
+}
 
-  if (showEventDetail) {
-    return <EventDetail setShowEventDetail={setShowEventDetail} />;
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  try {
+    // Await the params to ensure they are ready to use
+    const { slug } = await Promise.resolve(params);
+
+    // Get the calendar metadata using the server-side API
+    const calendarData = await api.schedule.getCalendarMetadata({ identifier: slug });
+
+    // Get the parent metadata
+    const previousImages = (await parent).openGraph?.images ?? [];
+    const calendarName = calendarData.name ?? 'Calendar';
+    const calendarImage = calendarData.image ? [{ url: calendarData.image }] : [];
+    const description = calendarData.shortDescription ?? `You have been invited to RSVP. Please let us know if you can attend.`;
+    return {
+      title: calendarName,
+      description,
+      openGraph: {
+        title: calendarName,
+        description,
+        images: [...previousImages, ...calendarImage],
+      },
+    };
+  } catch (error) {
+    console.error('Failed to fetch calendar metadata:', error);
+    // Fallback metadata if the API call fails
+    return {
+      title: 'Calendar',
+      description: 'View and manage your calendar events',
+      openGraph: {
+        title: 'Calendar',
+        description: 'View and manage your calendar events',
+        images: (await parent).openGraph?.images ?? [],
+      },
+    };
   }
+}
 
-  return (
-    <div className="w-full h-full flex flex-col">
-      <div className="flex-grow flex flex-col">
-        {currentView === "month" || currentView === "mobile-month" ? (
-          size === "sm" ? (
-            <MobileMonth />
-          ) : (
-            <MonthView
-              selectedDate={selectedDate}
-              onDateSelect={handleDateSelect}
-            />
-          )
-        ) : (
-          <WeekView
-            selectedDate={selectedDate}
-            onTimeSlotSelect={handleTimeSlotSelect}
-          />
-        )}
-      </div>
-    </div>
-  );
+export default async function CalendarPage() {
+  return <CalendarClient />;
 }

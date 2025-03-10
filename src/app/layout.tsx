@@ -8,6 +8,7 @@ import { SignIn } from "@/components/auth/sign-in";
 import { TRPCReactProvider } from "@/trpc/react";
 import { HeroUIProvider } from "@heroui/react";
 import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/react"
 
 
 export default function RootLayout({
@@ -17,8 +18,10 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} flex flex-col h-full`}>
       <body className="flex flex-col h-full ">
         <SessionProvider>
+          
           <TRPCReactProvider><>
             <HeroUIProvider>
+              <Analytics />
               <SignIn open={false} onOpenChange={() => {
                 console.log("open")
               }} />

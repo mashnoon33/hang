@@ -134,6 +134,7 @@ export const rsvps = createTable(
   {
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     eventId: varchar("eventId", { length: 255 }).notNull(),
+    calendarId: integer("calendar_id").notNull().references(() => calendars.id),
     createdOn: timestamp('createdOn').notNull().defaultNow(),
     updatedOn: timestamp('updatedOn').notNull().defaultNow(),
     userId: varchar("user_id", { length: 255 })
