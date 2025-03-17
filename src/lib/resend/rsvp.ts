@@ -18,7 +18,7 @@ export async function sendRsvpEmail(
     const { name: calendarName } = calendar;
 
     const subject = `RSVP ${isReminder ? "Reminder" : "Confirmation"} for ${summary}`;
-    const react = RSVPEmail({ name, eventSummary: summary, eventStart: format(start, "MM/dd/yyyy hh:mm a"), eventEnd: format(end, "MM/dd/yyyy hh:mm a"), calendarName, calendarUrl: `https://${env.DOMAIN}/calendar/${calendar.shortUrl}`, isReminder });
+    const react = RSVPEmail({ name, eventSummary: summary, eventStart: format(start, "MM/dd/yyyy hh:mm a"), eventEnd: format(end, "MM/dd/yyyy hh:mm a"), calendarName, calendarUrl: `https://${env.NEXT_DOMAIN}/calendar/${calendar.shortUrl}`, isReminder });
 
     const { data, error } = await resend.emails.send({
         from: env.AUTH_EMAIL_FROM,
