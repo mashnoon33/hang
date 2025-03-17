@@ -9,6 +9,7 @@ export async function getCachedCalendarEvents(ctx: ContextType, calendar: Calend
     if (!data) {
         const data = await ical.async.fromURL(calendar.icalUrl);
         ctx.cache.set(calendar.icalUrl, data);
+        return data;
     }
     return data;
 }

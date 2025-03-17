@@ -1,0 +1,1 @@
+ALTER TABLE "hang_rsvp" ALTER COLUMN "calendar_id" SET NOT NULL;

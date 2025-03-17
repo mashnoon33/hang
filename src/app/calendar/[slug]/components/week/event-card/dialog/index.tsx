@@ -67,7 +67,7 @@ export function EventDialog({ isOpen, event, onClose }: { isOpen: boolean, event
   }, [rsvpsForEvent, session?.user.id]);
 
   const handleRSVP = () => {
-    createRsvp({ eventId: event.uid, units: plusOne });
+    createRsvp({ eventId: event.uid, units: plusOne, calendarId: calendar!.id });
   };
 
   const handleCancelRSVP = () => {

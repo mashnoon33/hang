@@ -1,9 +1,6 @@
-import { Sidebar, SidebarContent, SidebarFooter } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent } from '@/components/ui/sidebar';
 import ReactMarkdown from 'react-markdown';
 import { EventDetailIsolate, TopNav } from '../event-detail';
-import { useViewportWidth } from '@/lib/hooks/use-viewport-width';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
 export function MarkdownRenderer({ markdown }: { markdown: string }) {
   return (
     <div className="markdown-body prose prose-sm prose-gray">
