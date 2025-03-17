@@ -21,7 +21,7 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     CRON_SECRET: z.string(),
-    NEXT_DOMAIN: z.string().url(),
+    NEXT_DOMAIN: z.string(),
   },
 
   /**
