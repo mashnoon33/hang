@@ -10,7 +10,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import { format } from 'date-fns';
+import { format, toZonedTime } from 'date-fns-tz';
 import { Calendar, Clock, LucideIcon } from 'lucide-react';
 
 
@@ -35,6 +35,10 @@ export const RSVPEmail = ({
   isReminder = false,
 }: RsvpEmailProps) => {
   const previewText = `RSVP ${isReminder ? "Reminder" : "Confirmation"} for ${eventSummary}`;
+  const timeZone = 'America/New_York';
+
+  const eventStartNY = eventStart ? toZonedTime(new Date(eventStart), timeZone) : undefined;
+  const eventEndNY = eventEnd ? toZonedTime(new Date(eventEnd), timeZone) : undefined;
 
   return (
     <Html>
@@ -53,10 +57,11 @@ export const RSVPEmail = ({
               {isReminder ? "This is a reminder for your reservation. Hope to see you soon! Please let the host know if you need to cancel." : "This is a confirmation for your reservation. Hope to see you soon! Please let the host know if you need to cancel."}
             </Text>
             <Section className="flex flex-col gap-[-15px]">
-              <Section>              <IconLabel icon={Calendar} label={` ${format(new Date(eventStart!), "EEEE, MMM d, yyyy")}`} />
+              <Section>
+                <IconLabel icon={Calendar} label={` ${eventStartNY ? format(eventStartNY, "EEEE, MMM d, yyyy") : ''}`} />
               </Section>
               <Section>
-                <IconLabel icon={Clock} label={` ${format(new Date(eventStart!), "hh:mm a")} - ${format(new Date(eventEnd!), "hh:mm a")}`} />
+                <IconLabel icon={Clock} label={` ${eventStartNY ? format(eventStartNY, "hh:mm a") : ''} - ${eventEndNY ? format(eventEndNY, "hh:mm a") : ''}`} />
               </Section>
               
             </Section>

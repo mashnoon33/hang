@@ -72,6 +72,25 @@ export function Event({ event, disableDialog }: { event: VEvent, disableDialog?:
       return 'bg-blue-100 hover:bg-blue-200';
     }
   }, [metadata.type, hasRsvp, oldEvent]);
+  const primaryColor = useMemo(() => {
+    if (oldEvent) {
+      return 'text-gray-500';
+    } else if (metadata.type === 'u') {
+      return 'text-gray-500';
+    } else if (isGoing) {
+      return 'text-white';
+    }
+  }, [metadata.type, oldEvent, isGoing]);
+
+  const secondaryColor = useMemo(() => {
+    if (oldEvent) {
+      return 'text-gray-500';
+    } else if (metadata.type === 'u') {
+      return 'text-gray-500';
+    } else if (isGoing) {
+      return 'text-blue-200';
+    }
+  }, [metadata.type, oldEvent, isGoing]);
   return (
     <>
       <div
@@ -80,12 +99,12 @@ export function Event({ event, disableDialog }: { event: VEvent, disableDialog?:
         title={`${event.summary}\n${format(startDate, "h:mm a")} - ${format(endDate, "h:mm a")}`}
         onClick={!oldEvent ? handleOpen : undefined}
       >
-        <div className={`font-bold ${hasRsvp ? 'text-white' : 'text-blue-900'}`}>{event.summary}</div>
-        <div className={`text-gray-600 ${hasRsvp ? 'text-white' : 'text-blue-900'}`}>
+        <div className={`font-bold ${primaryColor}`}>{event.summary}</div>
+        <div className={`text-gray-600 ${secondaryColor}`}>
           {format(startDate, startDate.getMinutes() !== 0 ? "h:mm a" : "h a")} - {format(endDate, endDate.getMinutes() !== 0 ? "h:mm a" : "h a")}
         </div>
         {tags.map((tag, index) => (
-          <div key={index} className="mr-1">
+          <div key={index} className={`mr-1 ${secondaryColor}`}>
             {tag}
           </div>
         ))}

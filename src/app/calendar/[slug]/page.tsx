@@ -3,8 +3,7 @@ import { CalendarClient } from './components/CalendarClient';
 import { api } from '@/trpc/server';
 
 type Props = {
-  params: { slug: string };
-  searchParams: Record<string, string | string[] | undefined>;
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata(
