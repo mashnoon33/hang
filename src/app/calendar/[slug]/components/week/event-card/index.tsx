@@ -100,7 +100,7 @@ export function Event({ event, disableDialog }: { event: VEvent, disableDialog?:
         onClick={!oldEvent ? handleOpen : undefined}
       >
         <div className={`font-bold ${primaryColor}`}>{event.summary}</div>
-        <div className={`text-gray-600 ${secondaryColor}`}>
+        <div className={`${secondaryColor}`}>
           {format(startDate, startDate.getMinutes() !== 0 ? "h:mm a" : "h a")} - {format(endDate, endDate.getMinutes() !== 0 ? "h:mm a" : "h a")}
         </div>
         {tags.map((tag, index) => (
