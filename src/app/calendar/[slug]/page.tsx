@@ -1,45 +1,40 @@
-import type { Metadata, ResolvingMetadata } from 'next';
-import { CalendarClient } from './components/CalendarClient';
-import { api } from '@/trpc/server';
+import type { Metadata, ResolvingMetadata } from "next";
+import { api } from "@/trpc/server";
+import { CalendarView } from "@/components/calendar/calendar";
 
-type Props = {
-  params: Promise<{ slug: string }>
-}
 
 export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
+  { params }: {
+    params: Promise<{ slug: string }>;
+  },
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   try {
-    // Await the params to ensure they are ready to use
     const { slug } = await Promise.resolve(params);
+    const data = await api.schedule.getCalendarMetadata({ identifier: slug });
+    const images = (await parent).openGraph?.images ?? [];
 
-    // Get the calendar metadata using the server-side API
-    const calendarData = await api.schedule.getCalendarMetadata({ identifier: slug });
+    const metadata = {
+      title: data.name ?? "Calendar",
+      description: data.shortDescription ?? "You have been invited to RSVP.",
+    };
 
-    // Get the parent metadata
-    const previousImages = (await parent).openGraph?.images ?? [];
-    const calendarName = calendarData.name ?? 'Calendar';
-    const calendarImage = calendarData.image ? [{ url: calendarData.image }] : [];
-    const description = calendarData.shortDescription ?? `You have been invited to RSVP. Please let us know if you can attend.`;
     return {
-      title: calendarName,
-      description,
+      ...metadata,
       openGraph: {
-        title: calendarName,
-        description,
-        images: [...previousImages, ...calendarImage],
+        ...metadata,
+        images: [...images, ...(data.image ? [{ url: data.image }] : [])],
       },
     };
-  } catch (error) {
-    console.error('Failed to fetch calendar metadata:', error);
-    // Fallback metadata if the API call fails
+  } catch {
+    const fallback = {
+      title: "Calendar",
+      description: "View and manage your calendar events",
+    };
     return {
-      title: 'Calendar',
-      description: 'View and manage your calendar events',
+      ...fallback,
       openGraph: {
-        title: 'Calendar',
-        description: 'View and manage your calendar events',
+        ...fallback,
         images: (await parent).openGraph?.images ?? [],
       },
     };
@@ -47,5 +42,5 @@ export async function generateMetadata(
 }
 
 export default async function CalendarPage() {
-  return <CalendarClient />;
+  return <CalendarView />;
 }

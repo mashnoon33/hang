@@ -22,8 +22,6 @@ export const mailRouter = createTRPCRouter({
         }),
     })).mutation(async ({ ctx, input }) => {
         const { event, calendarId, user } = input;
-        console.log("Sending email");
-        console.log(input)
 
         const calendar = await ctx.db.query.calendars.findFirst({
             where: eq(calendars.id, calendarId),
@@ -37,7 +35,6 @@ export const mailRouter = createTRPCRouter({
             summary: event.name,
             start: event.start,
             end: event.end,
-            // Assuming other necessary VEvent properties are set here
         };
 
         await sendRsvpEmail(user, eventProps, calendar);

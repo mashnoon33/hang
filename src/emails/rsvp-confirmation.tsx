@@ -9,10 +9,9 @@ import {
   Section,
   Tailwind,
   Text,
-} from '@react-email/components';
-import { format, toZonedTime } from 'date-fns-tz';
-import { Calendar, Clock, LucideIcon } from 'lucide-react';
-
+} from "@react-email/components";
+import { format, toZonedTime } from "date-fns-tz";
+import { Calendar, Clock, LucideIcon } from "lucide-react";
 
 interface RsvpEmailProps {
   name?: string;
@@ -35,40 +34,55 @@ export const RSVPEmail = ({
   isReminder = false,
 }: RsvpEmailProps) => {
   const previewText = `RSVP ${isReminder ? "Reminder" : "Confirmation"} for ${eventSummary}`;
-  const timeZone = 'America/New_York';
+  const timeZone = "America/New_York";
 
-  const eventStartNY = eventStart ? toZonedTime(new Date(eventStart), timeZone) : undefined;
-  const eventEndNY = eventEnd ? toZonedTime(new Date(eventEnd), timeZone) : undefined;
+  const eventStartNY = eventStart
+    ? toZonedTime(new Date(eventStart), timeZone)
+    : undefined;
+  const eventEndNY = eventEnd
+    ? toZonedTime(new Date(eventEnd), timeZone)
+    : undefined;
 
   return (
     <Html>
       <Head />
       <Tailwind>
-        <Body className="bg-white my-auto mx-auto font-sans px-2 ">
+        <Body className="mx-auto my-auto bg-white px-2 font-sans">
           <Preview>{previewText}</Preview>
-          <Container className="border  border-solid border-[#eaeaea] rounded-xl my-[40px] mx-auto p-[20px] max-w-[465px]">
-            <Heading className="text-gray-600 text-[14px] font-normal mb-[-12px]  p-0 mx-0">
+          <Container className="mx-auto my-[40px] max-w-[465px] rounded-xl border border-solid border-[#eaeaea] p-[20px]">
+            <Heading className="mx-0 mb-[-12px] p-0 text-[14px] font-normal text-gray-600">
               {calendarName}
             </Heading>
-            <Heading className="text-black text-[24px] font-bold  p-0 mb-[10px] mx-0">
+            <Heading className="mx-0 mb-[10px] p-0 text-[24px] font-bold text-black">
               {eventSummary}
             </Heading>
-            <Text className="text-black text-[14px] leading-[24px]">
-              {isReminder ? "This is a reminder for your reservation. Hope to see you soon! Please let the host know if you need to cancel." : "This is a confirmation for your reservation. Hope to see you soon! Please let the host know if you need to cancel."}
+            <Text className="text-[14px] leading-[24px] text-black">
+              {isReminder
+                ? "This is a reminder for your reservation. Hope to see you soon! Please let the host know if you need to cancel."
+                : "This is a confirmation for your reservation. Hope to see you soon! Please let the host know if you need to cancel."}
             </Text>
             <Section className="flex flex-col gap-[-15px]">
               <Section>
-                <IconLabel icon={Calendar} label={` ${eventStartNY ? format(eventStartNY, "EEEE, MMM d, yyyy") : ''}`} />
+                <IconLabel
+                  icon={Calendar}
+                  label={` ${eventStartNY ? format(eventStartNY, "EEEE, MMM d, yyyy") : ""}`}
+                />
               </Section>
               <Section>
-                <IconLabel icon={Clock} label={` ${eventStartNY ? format(eventStartNY, "hh:mm a") : ''} - ${eventEndNY ? format(eventEndNY, "hh:mm a") : ''}`} />
+                <IconLabel
+                  icon={Clock}
+                  label={` ${eventStartNY ? format(eventStartNY, "hh:mm a") : ""} - ${eventEndNY ? format(eventEndNY, "hh:mm a") : ""}`}
+                />
               </Section>
-              
             </Section>
             <Section className="mt-[20px]">
-              <Button className="px-3 bg-black text-white py-2 text-sm rounded-lg" href={calendarUrl}>View Calendar</Button>
+              <Button
+                className="rounded-lg bg-black px-3 py-2 text-sm text-white"
+                href={calendarUrl}
+              >
+                View Calendar
+              </Button>
             </Section>
-            
           </Container>
         </Body>
       </Tailwind>
@@ -77,17 +91,16 @@ export const RSVPEmail = ({
 };
 
 RSVPEmail.PreviewProps = {
-  name: 'Alan Turing',
-  eventSummary: 'Enigma Project Meeting',
-  eventStart: '10/10/2023 10:00 AM',
-  eventEnd: '10/10/2023 11:00 AM',
-  calendarName: 'Enigma Calendar',
-  calendarUrl: 'https://enigma.calendar.com',
+  name: "Alan Turing",
+  eventSummary: "Enigma Project Meeting",
+  eventStart: "10/10/2023 10:00 AM",
+  eventEnd: "10/10/2023 11:00 AM",
+  calendarName: "Enigma Calendar",
+  calendarUrl: "https://enigma.calendar.com",
   isReminder: true,
 } as RsvpEmailProps;
 
 export default RSVPEmail;
-
 
 interface IconLabelProps {
   icon: LucideIcon;
@@ -95,10 +108,14 @@ interface IconLabelProps {
   labelClass?: string;
 }
 
-export function IconLabel({ icon: Icon, label, labelClass = "font-normal" }: IconLabelProps) {
+export function IconLabel({
+  icon: Icon,
+  label,
+  labelClass = "font-normal",
+}: IconLabelProps) {
   return (
-    <div className="flex flex-row gap-2 items-center my-[-10px] text-gray-600">
-      <Icon className="w-4 h-4 flex-shrink-0" />
+    <div className="my-[-10px] flex flex-row items-center gap-2 text-gray-600">
+      <Icon className="h-4 w-4 flex-shrink-0" />
       <p className={labelClass}>{label}</p>
     </div>
   );

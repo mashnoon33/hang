@@ -13,9 +13,15 @@ import { ZodError } from "zod";
 
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
-import ical from "node-ical";
+import type ical from "node-ical";
 import { env } from "@/env";
-const cache = new Map<string,  ical.CalendarResponse>();
+
+type CahcedItem<T> = {
+  data: T;
+  expiresAt: number;
+}
+
+const cache = new Map<string, CahcedItem<ical.CalendarResponse>>();
 
 /**
  * 1. CONTEXT

@@ -1,11 +1,10 @@
 "use client";
 
-
-import { Button } from "@/components/ui/button"
-import CreateCalendarModal from "@/components/modals/create-calendar"
+import { Button } from "@/components/ui/button";
+import CreateCalendarModal from "@/components/modals/create-calendar";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { SignIn } from "@/components/auth/sign-in";
+import { SignIn } from "@/components/modals/auth/sign-in";
 import { useState } from "react";
 
 export default function Home() {
@@ -27,21 +26,46 @@ export default function Home() {
         <h1 className="mb-6 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl">
           Welcome to Hang
         </h1>
-        <p className="mb-8  text-gray-600">
-          Hang is an appointment scheduling platform for social situations, similar to a combination of Calendly and Partiful.
-          <span className="italic"> It is very much a work in progress. Most functionality is not yet implemented.</span>
+        <p className="mb-8 text-gray-600">
+          Hang is an appointment scheduling platform for social situations,
+          similar to a combination of Calendly and Partiful.
+          <span className="italic">
+            {" "}
+            It is very much a work in progress. Most functionality is not yet
+            implemented.
+          </span>
         </p>
         <div className="flex justify-center gap-4">
-          {status === "authenticated" && <CreateCalendarModal open={openCreateCalendarModal} onOpenChange={setOpenCreateCalendarModal} onSave={handleSave} />}
-          {status === "authenticated" && <Button onClick={() => signOut()}>Sign Out</Button>}
-          {status === "unauthenticated" && <Button onClick={handleSignIn}>Sign In</Button>}
-          {status === "unauthenticated" && <SignIn open={openSignInModal} onOpenChange={setOpenSignInModal} />}
-          {status === "authenticated" && <Button onClick={() => setOpenCreateCalendarModal(true)}>Create Calendar</Button>}
-          {status === "authenticated" && <CreateCalendarModal open={openCreateCalendarModal} onOpenChange={setOpenCreateCalendarModal} onSave={handleSave} />}
-
+          {status === "authenticated" && (
+            <CreateCalendarModal
+              open={openCreateCalendarModal}
+              onOpenChange={setOpenCreateCalendarModal}
+              onSave={handleSave}
+            />
+          )}
+          {status === "authenticated" && (
+            <Button onClick={() => signOut()}>Sign Out</Button>
+          )}
+          {status === "unauthenticated" && (
+            <Button onClick={handleSignIn}>Sign In</Button>
+          )}
+          {status === "unauthenticated" && (
+            <SignIn open={openSignInModal} onOpenChange={setOpenSignInModal} />
+          )}
+          {status === "authenticated" && (
+            <Button onClick={() => setOpenCreateCalendarModal(true)}>
+              Create Calendar
+            </Button>
+          )}
+          {status === "authenticated" && (
+            <CreateCalendarModal
+              open={openCreateCalendarModal}
+              onOpenChange={setOpenCreateCalendarModal}
+              onSave={handleSave}
+            />
+          )}
         </div>
       </div>
     </main>
-  )
+  );
 }
-

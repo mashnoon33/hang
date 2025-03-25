@@ -1,11 +1,11 @@
-import { createTRPCRouter, protectedProcedure, cronProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, cronProcedure, protectedProcedure } from "@/server/api/trpc";
 import { calendars, rsvps, users } from "@/server/db/schema";
 import { getCachedCalendarEvents } from "@/server/utils/get-cached-calendar-events";
 
-import { and, eq, gte, lt } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { organizeEventsByDate, organizeEventsById } from "../../../lib/ical";
-// ctx.session!.user.id
+import { organizeEventsById } from "../../../lib/ical";
+
 export const rsvpRouter = createTRPCRouter({
     getRsvp: protectedProcedure.query(async ({ ctx, input }) => {
         const rsvp = await ctx.db.query.rsvps.findFirst({
@@ -32,30 +32,23 @@ export const rsvpRouter = createTRPCRouter({
         start: z.string(),
         end: z.string(),
     })).query(async ({ ctx, input }) => {
-        console.log("getUpcomingRsvps called with input:", input);
-
         const allRsvps = await ctx.db.select().from(rsvps)
             .leftJoin(calendars, eq(rsvps.calendarId, calendars.id))
             .leftJoin(users, eq(rsvps.userId, users.id));
-        console.log(`Fetched ${allRsvps.length} RSVPs with calendars`);
 
         const calendarEvents = await Promise.all(
             allRsvps.map(async (rsvp) => {
                 if (!rsvp.calendar) {
-                    console.log("No calendar found for RSVP:", rsvp.rsvp.calendarId);
                     return {};
                 }
                 const data = await getCachedCalendarEvents(ctx, rsvp.calendar);
                 if (!data) {
-                    console.log("No cached calendar events found for calendar:", rsvp.calendar.name);
                     return {};
                 }
-                console.log("Cached calendar events found for calendar:", rsvp.calendar.name);
                 return organizeEventsById(data);
             })
         ).then(eventsArray => {
             const combinedEvents = eventsArray.reduce((acc, events) => ({ ...acc, ...events }), {});
-            console.log(`Combined calendar events by ID, total events found: ${Object.keys(combinedEvents).length}`);
             return combinedEvents;
         });
 
@@ -65,10 +58,8 @@ export const rsvpRouter = createTRPCRouter({
             rsvp: allRsvp.rsvp,
             user: allRsvp.user,
         }));
-        console.log(`RSVPs with associated events: ${rsvpsWithEvents.length}`);
 
         const filteredRsvps = rsvpsWithEvents.filter((rsvp) => rsvp.event && rsvp.event.start > new Date(input.start) && rsvp.event.start < new Date(input.end));
-        console.log(`Filtered upcoming RSVPs: ${filteredRsvps.length}`);
 
         return filteredRsvps;
     }),
@@ -109,10 +100,11 @@ export const rsvpRouter = createTRPCRouter({
         });
         return input;
     }),
+    
     cancelRsvp: protectedProcedure.input(z.object({
         eventId: z.string(),
     })).mutation(async ({ ctx, input }) => {
-        await ctx.db.delete(rsvps).where(eq(rsvps.eventId, input.eventId));
+        await ctx.db.delete(rsvps).where(eq(rsvps.eventId, input.eventId) && eq(rsvps.userId, ctx.session.user.id));
         return input;
     }),
 });
