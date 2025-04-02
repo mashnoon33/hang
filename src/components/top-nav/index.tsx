@@ -23,7 +23,7 @@ export function TopNav() {
     );
     return (
       <div className="flex h-12 md:h-16 flex-row items-center justify-between bg-gradient-to-t from-transparent to-red-50 px-4 py-2">
-        <h1 className="text-xl font-bold text-red-700" style={{ fontFamily: 'Arial Black' }}>Hang</h1>
+        <h1 className="text-xl font-bold text-red-700" style={{ fontFamily: '"Arial Black", "Arial Bold", Gadget, sans-serif' }}>Hang</h1>
         <div className="flex flex-row gap-2">
           {isOwner && (
             <Button
