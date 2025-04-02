@@ -1,5 +1,5 @@
 
-![Hang](public/logo.png)
+![Hang](assets/logo.png)
 
 
 Hang is a modern social calendar that takes the headache out of planning 
@@ -14,6 +14,22 @@ The magic is in the simplicity. Hosts get a clear view of attendance
 across all dates, while guests can easily mark their availability and 
 see who else is joining each event. It's social planning that actually 
 makes sense.
+
+![Combined](assets/combined.png)
+
+## Features
+
+### Completed ✅
+- User Authentication (OAuth + Magic Link)
+- Calendar Creation & Management
+- Event Creation (via Google Calendar)
+- Email Notifications
+
+### In Progress 🚧
+- Event creation in platform
+- User Dashboard
+- Admin Dashboard
+- Image Upload
 
 ## Getting Started
 
